@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Sh4Nn0n's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="跨站脚本攻击（XSS）-编码剖析 前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。 1、浏览器的解码上图显示了浏览器从接收代码，到渲染完成的过程：1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。2、CSS">
+<meta name="keywords" content="渗透测试,XSS,Web安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS-编码解码">
+<meta property="og:url" content="http://yoursite.com/2019/10/14/XSS-编码解码/index.html">
+<meta property="og:site_name" content="Sh4Nn0n&#39;s Blog">
+<meta property="og:description" content="跨站脚本攻击（XSS）-编码剖析 前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。 1、浏览器的解码上图显示了浏览器从接收代码，到渲染完成的过程：1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。2、CSS">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/10/14/XSS-编码解码/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/10/14/XSS-编码解码/2.png">
+<meta property="og:updated_time" content="2019-10-14T11:13:02.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="XSS-编码解码">
+<meta name="twitter:description" content="跨站脚本攻击（XSS）-编码剖析 前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。 1、浏览器的解码上图显示了浏览器从接收代码，到渲染完成的过程：1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。2、CSS">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/14/XSS-编码解码/1.jpg">
+  <link rel="canonical" href="http://yoursite.com/2019/10/14/XSS-编码解码/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>XSS-编码解码 | Sh4Nn0n's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sh4Nn0n's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">^.^</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/14/XSS-编码解码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sh4Nn0n">
+      <meta itemprop="description" content="甲方安全小白帽，欢迎交流~">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sh4Nn0n's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">XSS-编码解码
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-14 00:00:00 / 修改时间：19:13:02" itemprop="dateCreated datePublished" datetime="2019-10-14T00:00:00+08:00">2019-10-14</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/渗透测试/" itemprop="url" rel="index"><span itemprop="name">渗透测试</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="跨站脚本攻击（XSS）-编码剖析"><a href="#跨站脚本攻击（XSS）-编码剖析" class="headerlink" title="跨站脚本攻击（XSS）-编码剖析"></a>跨站脚本攻击（XSS）-编码剖析</h1><hr><ul>
+<li>前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。</li>
+</ul><h2 id="1、浏览器的解码"><a href="#1、浏览器的解码" class="headerlink" title="1、浏览器的解码"></a>1、浏览器的解码</h2><p><img src="/2019/10/14/XSS-编码解码/1.jpg" alt></p><p>上图显示了浏览器从接收代码，到渲染完成的过程：<br>1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。<br>2、CSS 解析，解析CSS会产生CSS规则树。<br>3、Javascript DOM，主要是通过DOM API和CSSOM API来操作DOM Tree和CSS Rule Tree.</p><a id="more"></a>
+
+
+
+<p>浏览器最早开始解析HTML代码的时候，将标签转化为内容树中的DOM节点，此时浏览器识别标签的时候，其HTML解析器是无法识别<strong>被实体编码的内容</strong>的，（这代表，如果开发人员在服务器端实体编码了我们的代码，那么我们在这一环节将无法改变DOM树结构）只有建立起<strong>DOM树</strong>之后，才能对每个节点的内容进行渲染，在此基础上，JavaScript Dom API参与进来，可以对DOM树进行修改（包含Javascript的恶意代码会触发Javascript解释器，来改变DOM树结构和内容从而执行XSS）。而此时，CSS解析器负责解析外部CSS文件以及Style标签中的样式内容，这些信息将搭配HTML中的可见指令构建一个Rendering Tree。</p>
+<h2 id="2、编码和解码发生的顺序"><a href="#2、编码和解码发生的顺序" class="headerlink" title="2、编码和解码发生的顺序"></a>2、编码和解码发生的顺序</h2><p>我们刚才讲解了浏览器的渲染过程。现在我们来看一下从我们输入恶意代码，传入到服务器，再到服务器返回给浏览器，最终浏览器渲染成网页的这段过程中，都发生了什么。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;a href=&quot;javascript:alert(&apos;&lt;?php echo $_GET[&apos;input&apos;];?&gt;&apos;);&quot;&gt;test&lt;/a&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input: %26lt%5cu4e00%26gt</span><br></pre></td></tr></table></figure>
+
+<p>假设我们输入的值为 <em>%26lt%5cu4e00%26gt</em> 并通过GET请求提交至服务器，服务器回对我们输入的值进行URL解码，变成 <em>&amp;lt\u4e00&amp;gt</em> ，服务端传回数据给浏览器，浏览器生成了DOM树，此时的代码是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;a href=&quot;javascript:alert(&apos;&amp;lt\u4e00&amp;gt&apos;);&quot;&gt;test&lt;/a&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在页面右键点击 <strong>查看网站源代码</strong> 查看源码。（注意不是F12，F12的检查元素功能看到是的经过浏览器渲染后的内容)</p>
+<p>DOM树生成之后，浏览器对我们的代码进行渲染，首先对标签里的元素进行HTML实体解码，我们的代码变为了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;javascript:alert(&apos;&lt;\u4e00&gt;&apos;);&quot;&gt;test&lt;/a&gt;\</span><br></pre></td></tr></table></figure>
+
+<p>也就是f12的检查元素中显示的内容</p>
+<p>然后，当我们点击链接的时候，浏览器对href中的链接发起了一个请求，执行了Javascript代码，此时Javascript解释器对我们的参数进行了Unicode解码，此时，我们的代码变成了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;javascript:alert(&apos;&lt;-&gt;&apos;);&quot;&gt;test&lt;/a&gt;\</span><br></pre></td></tr></table></figure>
+
+<p>并最终弹框。<br><img src="/2019/10/14/XSS-编码解码/2.png" alt></p>
+<h2 id="3、一些注意事项"><a href="#3、一些注意事项" class="headerlink" title="3、一些注意事项"></a>3、一些注意事项</h2><p>当我们尝试使用编码来绕过过滤器时，要避免一些特殊的情况，如：<br>1、不能对Javacscript等伪协议进行URL编码，URL解码后会当做无协议处理。<br>2、在进行HTML解码的时候，不能对 <strong>“(‘</strong> 这些特殊字符进行HTML实体编码，解码后这些字符将变成普通文本。<br>3、在进行Javascript解析的时候，<strong>“(‘</strong> 这些控制字符不能进行JS编码，解码后这些符号被当做文本处理。</p>
+<hr>
+<h3 id="本文作者：Sh4Nn0n"><a href="#本文作者：Sh4Nn0n" class="headerlink" title="本文作者：Sh4Nn0n"></a>本文作者：Sh4Nn0n</h3><h3 id="本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。"><a href="#本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。" class="headerlink" title="本文首发于Sh4Nn0n’s Blog，写文不易，转载请注明出处。"></a>本文首发于<a href="http://www.sh4nn0n.com" target="_blank" rel="noopener">Sh4Nn0n’s Blog</a>，写文不易，转载请注明出处。</h3>
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/渗透测试/" rel="tag"># 渗透测试</a>
+            
+              <a href="/tags/XSS/" rel="tag"># XSS</a>
+            
+              <a href="/tags/Web安全/" rel="tag"># Web安全</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/12/Python-正则表达式/" rel="next" title="Python-正则表达式">
+                  <i class="fa fa-chevron-left"></i> Python-正则表达式
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#跨站脚本攻击（XSS）-编码剖析"><span class="nav-text">跨站脚本攻击（XSS）-编码剖析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、浏览器的解码"><span class="nav-text">1、浏览器的解码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、编码和解码发生的顺序"><span class="nav-text">2、编码和解码发生的顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、一些注意事项"><span class="nav-text">3、一些注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本文作者：Sh4Nn0n"><span class="nav-text">本文作者：Sh4Nn0n</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。"><span class="nav-text">本文首发于Sh4Nn0n’s Blog，写文不易，转载请注明出处。</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/header.jpg"
+      alt="Sh4Nn0n">
+  <p class="site-author-name" itemprop="name">Sh4Nn0n</p>
+  <div class="site-description" itemprop="description">甲方安全小白帽，欢迎交流~</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fuziyuonly" title="GitHub &rarr; https://github.com/fuziyuonly" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sh4Nn0n</span>
+</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+    
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

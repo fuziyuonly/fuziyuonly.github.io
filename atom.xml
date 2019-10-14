@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Sh4Nn0n&#39;s Blog</title>
+  
+  <subtitle>^.^</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2019-10-14T11:13:02.691Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Sh4Nn0n</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>XSS-编码解码</title>
+    <link href="http://yoursite.com/2019/10/14/XSS-%E7%BC%96%E7%A0%81%E8%A7%A3%E7%A0%81/"/>
+    <id>http://yoursite.com/2019/10/14/XSS-编码解码/</id>
+    <published>2019-10-13T16:00:00.000Z</published>
+    <updated>2019-10-14T11:13:02.691Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;跨站脚本攻击（XSS）-编码剖析&quot;&gt;&lt;a href=&quot;#跨站脚本攻击（XSS）-编码剖析&quot; class=&quot;headerlink&quot; title=&quot;跨站脚本攻击（XSS）-编码剖析&quot;&gt;&lt;/a&gt;跨站脚本攻击（XSS）-编码剖析&lt;/h1&gt;&lt;hr&gt;&lt;ul&gt;
+&lt;li&gt;前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。&lt;/li&gt;
+&lt;/ul&gt;&lt;h2 id=&quot;1、浏览器的解码&quot;&gt;&lt;a href=&quot;#1、浏览器的解码&quot; class=&quot;headerlink&quot; title=&quot;1、浏览器的解码&quot;&gt;&lt;/a&gt;1、浏览器的解码&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/2019/10/14/XSS-编码解码/1.jpg&quot; alt&gt;&lt;/p&gt;&lt;p&gt;上图显示了浏览器从接收代码，到渲染完成的过程：&lt;br&gt;1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。&lt;br&gt;2、CSS 解析，解析CSS会产生CSS规则树。&lt;br&gt;3、Javascript DOM，主要是通过DOM API和CSSOM API来操作DOM Tree和CSS Rule Tree.&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="XSS" scheme="http://yoursite.com/tags/XSS/"/>
+    
+      <category term="Web安全" scheme="http://yoursite.com/tags/Web%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python-正则表达式</title>
+    <link href="http://yoursite.com/2019/10/12/Python-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
+    <id>http://yoursite.com/2019/10/12/Python-正则表达式/</id>
+    <published>2019-10-11T16:00:00.000Z</published>
+    <updated>2019-10-12T10:25:52.006Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Python-正则表达式&quot;&gt;&lt;a href=&quot;#Python-正则表达式&quot; class=&quot;headerlink&quot; title=&quot;Python-正则表达式&quot;&gt;&lt;/a&gt;Python-正则表达式&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;1-正则表达式&quot;&gt;&lt;a href=&quot;#1-正则表达式&quot; class=&quot;headerlink&quot; title=&quot;1.正则表达式&quot;&gt;&lt;/a&gt;1.正则表达式&lt;/h2&gt;&lt;p&gt;正则表达式用来匹配特定的字符串，python中提供RE模块进行正则表达式匹配。&lt;/p&gt;&lt;h3 id=&quot;1-1-正则表达式语法&quot;&gt;&lt;a href=&quot;#1-1-正则表达式语法&quot; class=&quot;headerlink&quot; title=&quot;1.1 正则表达式语法&quot;&gt;&lt;/a&gt;1.1 正则表达式语法&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;\w    # 匹配任意字母、数字、下划线&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;\W    # 匹配任意非字母、数字、下划线&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;\d    # 匹配数字&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;\D    # 匹配所有的非数字&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;\s    # 匹配空白符号(空格、Tab等)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;\S    # 匹配所有非文本&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;.     # 匹配任意字符1次&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;*     # 匹配前面的表达式0/n次 \d*&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+     # 匹配前面的表达式1/n次 \d+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;?     # 匹配前面的表达式0/1次&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;m&amp;#125;   # 匹配前面的表达式m次&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;m,&amp;#125;  # 匹配前面的表达式N到无穷&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;,n&amp;#125;  # 匹配前面的表达式0到M次&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;m,n&amp;#125; # 匹配前面的表达式m到n次 \d&amp;#123;m,n&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;*?    # 匹配前面的表达式0次&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+?    # 匹配前面的表达式1次&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[]    # 字符集 [a-zA-Z0-9\_]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;()    # 分组&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;|     # 或运算 (p|P)ython&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;^     # 开始符 ^\d&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$     # 结尾符 \d$&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="正则表达式" scheme="http://yoursite.com/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
+    
+  </entry>
+  
+</feed>
