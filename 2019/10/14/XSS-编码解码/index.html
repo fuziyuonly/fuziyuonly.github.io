@@ -330,20 +330,20 @@
 
 <p>浏览器最早开始解析HTML代码的时候，将标签转化为内容树中的DOM节点，此时浏览器识别标签的时候，其HTML解析器是无法识别<strong>被实体编码的内容</strong>的，（这代表，如果开发人员在服务器端实体编码了我们的代码，那么我们在这一环节将无法改变DOM树结构）只有建立起<strong>DOM树</strong>之后，才能对每个节点的内容进行渲染，在此基础上，JavaScript Dom API参与进来，可以对DOM树进行修改（包含Javascript的恶意代码会触发Javascript解释器，来改变DOM树结构和内容从而执行XSS）。而此时，CSS解析器负责解析外部CSS文件以及Style标签中的样式内容，这些信息将搭配HTML中的可见指令构建一个Rendering Tree。</p>
 <h2 id="2、编码和解码发生的顺序"><a href="#2、编码和解码发生的顺序" class="headerlink" title="2、编码和解码发生的顺序"></a>2、编码和解码发生的顺序</h2><p>我们刚才讲解了浏览器的渲染过程。现在我们来看一下从我们输入恶意代码，传入到服务器，再到服务器返回给浏览器，最终浏览器渲染成网页的这段过程中，都发生了什么。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;a href=&quot;javascript:alert(&apos;&lt;?php echo $_GET[&apos;input&apos;];?&gt;&apos;);&quot;&gt;test&lt;/a&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;?php echo $_GET['input'];?&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input: %26lt%5cu4e00%26gt</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">input</span>: <span class="number">%26</span>lt<span class="number">%5</span>cu4e00<span class="number">%26</span>gt</span><br></pre></td></tr></table></figure>
 
 <p>假设我们输入的值为 <em>%26lt%5cu4e00%26gt</em> 并通过GET请求提交至服务器，服务器回对我们输入的值进行URL解码，变成 <em>&amp;lt\u4e00&amp;gt</em> ，服务端传回数据给浏览器，浏览器生成了DOM树，此时的代码是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;a href=&quot;javascript:alert(&apos;&amp;lt\u4e00&amp;gt&apos;);&quot;&gt;test&lt;/a&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&amp;lt\u4e00&amp;gt');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>我们可以在页面右键点击 <strong>查看网站源代码</strong> 查看源码。（注意不是F12，F12的检查元素功能看到是的经过浏览器渲染后的内容)</p>
 <p>DOM树生成之后，浏览器对我们的代码进行渲染，首先对标签里的元素进行HTML实体解码，我们的代码变为了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;javascript:alert(&apos;&lt;\u4e00&gt;&apos;);&quot;&gt;test&lt;/a&gt;\</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;\u4e00&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span>\</span><br></pre></td></tr></table></figure>
 
 <p>也就是f12的检查元素中显示的内容</p>
 <p>然后，当我们点击链接的时候，浏览器对href中的链接发起了一个请求，执行了Javascript代码，此时Javascript解释器对我们的参数进行了Unicode解码，此时，我们的代码变成了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;javascript:alert(&apos;&lt;-&gt;&apos;);&quot;&gt;test&lt;/a&gt;\</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;-&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span>\</span><br></pre></td></tr></table></figure>
 
 <p>并最终弹框。<br><img src="/2019/10/14/XSS-编码解码/2.png" alt></p>
 <h2 id="3、一些注意事项"><a href="#3、一些注意事项" class="headerlink" title="3、一些注意事项"></a>3、一些注意事项</h2><p>当我们尝试使用编码来绕过过滤器时，要避免一些特殊的情况，如：<br>1、不能对Javacscript等伪协议进行URL编码，URL解码后会当做无协议处理。<br>2、在进行HTML解码的时候，不能对 <strong>“(‘</strong> 这些特殊字符进行HTML实体编码，解码后这些字符将变成普通文本。<br>3、在进行Javascript解析的时候，<strong>“(‘</strong> 这些控制字符不能进行JS编码，解码后这些符号被当做文本处理。</p>
@@ -386,6 +386,10 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/10/14/Python-urllib.parse模块/" rel="prev" title="Python-urllib.parse模块">
+                  Python-urllib.parse模块 <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -453,7 +457,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
