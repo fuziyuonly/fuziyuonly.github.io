@@ -1,47 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Python-urllib.parse模块</title>
-    <url>/2019/10/14/Python-urllib.parse%E6%A8%A1%E5%9D%97/</url>
-    <content><![CDATA[<h1 id="Python-urllib-parse模块"><a href="#Python-urllib-parse模块" class="headerlink" title="Python-urllib.parse模块"></a>Python-urllib.parse模块</h1><hr><h2 id="模块简介"><a href="#模块简介" class="headerlink" title="模块简介"></a>模块简介</h2><p>url.parse :定义了url的标准接口，实现url的各种抽取<br>parse模块的使用：url的解析，合并，编码，解码</p><h3 id="1、urlparse"><a href="#1、urlparse" class="headerlink" title="1、urlparse"></a>1、urlparse</h3><figure class="highlight subunit"><table><tr><td class="code"><pre><span class="line">from urllib.parse import urlparse</span><br><span class="line"><span class="keyword">test </span>= urlparse("https://www.baidu.com/test.php?id=1")</span><br><span class="line">print (test)</span><br></pre></td></tr></table></figure><a id="more"></a>
+    <title>python-Threading模块</title>
+    <url>/2019/10/16/python-Threading%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<hr><h1 id="python-Threading模块"><a href="#python-Threading模块" class="headerlink" title="python-Threading模块"></a>python-Threading模块</h1><hr><h2 id="模块简介"><a href="#模块简介" class="headerlink" title="模块简介"></a>模块简介</h2><p>Python 提供了多个模块来支持多线程编程，包括 thread、 threading 和 Queue 模块等。<br>程序是可以使用 thread 和 threading 模块来创建与管理线程。 thread 模块提供了基本的线程和锁定支持；而 threading 模块提供了更高级别、功能更全面的线程管理。<br>使用 Queue 模块，用户可以创建一个队列数据结构，用于在多线程之间进行共享。</p><a id="more"></a>
 
 
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="built_in">time</span>, threading</span><br><span class="line">def <span class="keyword">loop</span>():</span><br><span class="line">    print(<span class="string">'thread %s is running...'</span> % threading.current_thread().<span class="keyword">name</span>)</span><br><span class="line">    n = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">5</span>:</span><br><span class="line">        n = n + <span class="number">1</span></span><br><span class="line">        print(<span class="string">'thread %s &gt;&gt;&gt; %s'</span> % (threading.current_thread().<span class="keyword">name</span>, n))</span><br><span class="line">        <span class="built_in">time</span>.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">'thread %s ended.'</span> % threading.current_thread().<span class="keyword">name</span>)</span><br><span class="line">print(<span class="string">'thread %s is running...'</span> % threading.current_thread().<span class="keyword">name</span>)</span><br><span class="line">t = threading.Thread(target=<span class="keyword">loop</span>, <span class="keyword">name</span>=<span class="string">'LoopThread'</span>)</span><br><span class="line">t.start()</span><br><span class="line">t.join()</span><br><span class="line">print(<span class="string">'thread %s ended.'</span> % threading.current_thread().<span class="keyword">name</span>)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">ParseResult(<span class="attribute">scheme</span>=<span class="string">'https'</span>, <span class="attribute">netloc</span>=<span class="string">'www.baidu.com'</span>, <span class="attribute">path</span>=<span class="string">'/test.php'</span>, <span class="attribute">params</span>=<span class="string">''</span>, <span class="attribute">query</span>=<span class="string">'id=1'</span>, <span class="attribute">fragment</span>=<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lasso"><table><tr><td class="code"><pre><span class="line"><span class="keyword">thread</span> MainThread is running<span class="params">...</span></span><br><span class="line"><span class="keyword">thread</span> LoopThread is running<span class="params">...</span></span><br><span class="line"><span class="keyword">thread</span> LoopThread &gt;&gt;&gt; <span class="number">1</span></span><br><span class="line"><span class="keyword">thread</span> LoopThread &gt;&gt;&gt; <span class="number">2</span></span><br><span class="line"><span class="keyword">thread</span> LoopThread &gt;&gt;&gt; <span class="number">3</span></span><br><span class="line"><span class="keyword">thread</span> LoopThread &gt;&gt;&gt; <span class="number">4</span></span><br><span class="line"><span class="keyword">thread</span> LoopThread &gt;&gt;&gt; <span class="number">5</span></span><br><span class="line"><span class="keyword">thread</span> LoopThread ended.</span><br><span class="line"><span class="keyword">thread</span> MainThread ended.</span><br></pre></td></tr></table></figure>
 
-<p>将url分为6个部分，返回一个包含6个字符串项目的元组：协议、位置、路径、参数、查询、片段。</p>
-<h3 id="2、urlsplit"><a href="#2、urlsplit" class="headerlink" title="2、urlsplit"></a>2、urlsplit</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">from urllib<span class="selector-class">.parse</span> import urlsplit</span><br><span class="line">test2= urlsplit(<span class="string">"https://www.baidu.com/test.php?id=1"</span>)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(test2)</span></span></span><br></pre></td></tr></table></figure>
+<p>由于任何进程默认就会启动一个线程，我们把该线程称为主线程，主线程又可以启动新的线程，Python的threading模块有个current_thread()函数，它永远返回当前线程的实例。主线程实例的名字叫MainThread，子线程的名字在创建时指定，我们用LoopThread命名子线程。名字仅仅在打印时用来显示，完全没有其他意义，如果不起名字Python就自动给线程命名为Thread-1，Thread-2……</p>
+<p>Lock<br>多线程和多进程最大的不同在于，多进程中，同一个变量，各自有一份拷贝存在于每个进程中，互不影响，而多线程中，所有变量都由所有线程共享，所以，任何一个变量都可以被任何一个线程修改，因此，线程之间共享数据最大的危险在于多个线程同时改一个变量，把内容给改乱了。</p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line">import time, threading</span><br><span class="line"></span><br><span class="line"><span class="keyword">balance </span>= <span class="number">0</span></span><br><span class="line">lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">def change_it(n):</span><br><span class="line">    global <span class="keyword">balance</span></span><br><span class="line"><span class="keyword"> </span>   <span class="keyword">balance </span>= <span class="keyword">balance </span>+ n</span><br><span class="line">    <span class="keyword">balance </span>= <span class="keyword">balance </span>- n</span><br><span class="line"></span><br><span class="line">def run_thread(n):</span><br><span class="line">    for i in range(<span class="number">100000</span>):</span><br><span class="line">        lock.acquire()</span><br><span class="line"><span class="symbol">        try:</span></span><br><span class="line">            change_it(n)</span><br><span class="line"><span class="symbol">        finally:</span></span><br><span class="line">            lock.release()</span><br><span class="line"><span class="built_in">t1</span> = threading.Thread(target=run_thread, args=(<span class="number">5</span>,))</span><br><span class="line"><span class="built_in">t2</span> = threading.Thread(target=run_thread, args=(<span class="number">8</span>,))</span><br><span class="line"><span class="built_in">t1</span>.start()</span><br><span class="line"><span class="built_in">t2</span>.start()</span><br><span class="line"><span class="built_in">t1</span>.<span class="keyword">join()</span></span><br><span class="line"><span class="keyword">t2.join()</span></span><br><span class="line"><span class="keyword">print(balance)</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">SplitResult(<span class="attribute">scheme</span>=<span class="string">'https'</span>, <span class="attribute">netloc</span>=<span class="string">'www.baidu.com'</span>, <span class="attribute">path</span>=<span class="string">'/test.php'</span>, <span class="attribute">query</span>=<span class="string">'id=1'</span>, <span class="attribute">fragment</span>=<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
-
-<p>和urlparse差不多，将url分为5部分，返回一个包含5个字符串项目的元组：协议、位置、路径、查询、片段。</p>
-<h3 id="3、urlunparse"><a href="#3、urlunparse" class="headerlink" title="3、urlunparse"></a>3、urlunparse</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">from urllib<span class="selector-class">.parse</span> import urlunparse</span><br><span class="line">url_parmas = (<span class="string">'https'</span>, <span class="string">'baidu.com'</span>, <span class="string">'/info/123456'</span>, <span class="string">''</span>, <span class="string">'wd=123&amp;page=20'</span>, <span class="string">'home'</span>)</span><br><span class="line">result = urlunparse(url_parmas)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(result)</span></span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>baidu.com<span class="regexp">/info/</span><span class="number">123456</span>?wd=<span class="number">123</span>&amp;page=<span class="number">20</span><span class="comment">#home</span></span><br></pre></td></tr></table></figure>
-
-<p>实现URL的构造，<strong>def urlunparse(components)</strong>其中components:是一个可迭代对象，长度必须为6</p>
-<h3 id="4、urljoin"><a href="#4、urljoin" class="headerlink" title="4、urljoin"></a>4、urljoin</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">from urllib.parse import urljoin</span><br><span class="line">base_url = <span class="string">"https://www.baidu.com/home1/addurl/content?id=1"</span></span><br><span class="line">sub_url = <span class="string">"/home2/addurl/content?id=2"</span></span><br><span class="line">print (urljoin(base_url,sub_url))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>www.baidu.com<span class="regexp">/home2/</span>addurl<span class="regexp">/content?id=2</span></span><br></pre></td></tr></table></figure>
-
-<p>传递一个基础链接,根据基础链接可以将某一个不完整的链接拼接为一个完整链接</p>
-<h3 id="5、urlencode"><a href="#5、urlencode" class="headerlink" title="5、urlencode"></a>5、urlencode</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">from urllib<span class="selector-class">.parse</span> import urlencode</span><br><span class="line">test1 = &#123;</span><br><span class="line">    <span class="string">"id"</span>:<span class="string">"1"</span>,</span><br><span class="line">    <span class="string">"page"</span>:<span class="number">20</span></span><br><span class="line">&#125;</span><br><span class="line">test1_str = urlencode(test1)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(test1_str)</span></span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">id</span>=<span class="number">1</span>&amp;page=<span class="number">20</span></span><br></pre></td></tr></table></figure>
-
-<p>urlencode()将字典构形式的参数序列化为url编码后的字符串（常用来构造get请求和post请求的参数）key1=value1&amp;key2=value2</p>
-<h3 id="6、qoute"><a href="#6、qoute" class="headerlink" title="6、qoute()"></a>6、qoute()</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">from urllib<span class="selector-class">.parse</span> import quote</span><br><span class="line">word = <span class="string">"中文"</span></span><br><span class="line">url = <span class="string">'http://www.baidu.com/s?wd='</span>+quote(word)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(quote(word)</span></span>)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(url)</span></span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">%E4</span><span class="symbol">%B8</span><span class="symbol">%AD</span><span class="symbol">%E6</span><span class="symbol">%96</span><span class="symbol">%87</span></span><br><span class="line">http://www.baidu.com/s?wd=<span class="symbol">%E4</span><span class="symbol">%B8</span><span class="symbol">%AD</span><span class="symbol">%E6</span><span class="symbol">%96</span><span class="symbol">%87</span></span><br></pre></td></tr></table></figure>
-
-<p>quote()可以将中文转换为URL编码格式</p>
-<hr>
-<h3 id="本文作者：Sh4Nn0n"><a href="#本文作者：Sh4Nn0n" class="headerlink" title="本文作者：Sh4Nn0n"></a>本文作者：Sh4Nn0n</h3><h3 id="本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。"><a href="#本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。" class="headerlink" title="本文首发于Sh4Nn0n’s Blog，写文不易，转载请注明出处。"></a>本文首发于<a href="http://www.sh4nn0n.com" target="_blank" rel="noopener">Sh4Nn0n’s Blog</a>，写文不易，转载请注明出处。</h3>]]></content>
+<p>分布式进程</p>
+]]></content>
       <categories>
         <category>Python</category>
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JSONP-安全攻防技术</title>
+    <url>/2019/10/16/JSONP-%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E6%8A%80%E6%9C%AF/</url>
+    <content><![CDATA[<h1 id="JSONP-安全攻防技术"><a href="#JSONP-安全攻防技术" class="headerlink" title="JSONP-安全攻防技术"></a>JSONP-安全攻防技术</h1><hr><ul>
+<li>前言：本文是对<a href="https://blog.knownsec.com/2015/03/jsonp_security_technic/" target="_blank" rel="noopener">道哥：JSONP 安全攻防技术</a>的学习。</li>
+</ul><h2 id="0x00-JSONP产生原因"><a href="#0x00-JSONP产生原因" class="headerlink" title="0x00 JSONP产生原因"></a>0x00 JSONP产生原因</h2><p>1、AJAX不允许跨域请求文件。<br>2、Web调用Javascript文件时不受跨域影响（拥有“src”属性的标签都可跨域）<br>3、如果想通过纯Web端跨域访问数据，就需要把远程服务器的数据装进Javascript格式的文件里。<br>4、JSON的纯字符数据格式可以简洁描述复杂数据，还被Javascript原生支持，所以客户端可以随意处理这些数据。<br>5、解决方案：Web客户端调用跨域服务器上动态生成的Javascript格式文件（一般以JSON为后缀）。客户端对JSON数据进行处理和展现。</p><a id="more"></a>
+
+
+<h2 id="0x01-关于-JSONP"><a href="#0x01-关于-JSONP" class="headerlink" title="0x01 关于 JSONP"></a>0x01 关于 JSONP</h2><p>JSONP 全称是 JSON with Padding ，是基于 JSON 格式的为解决跨域请求资源而产生的解决方案。JSONP利用了 HTML 里 <code>&lt;script&gt; &lt;/script&gt;</code> 元素标签，远程调用 JSON 文件来实现数据传递，客户端传递一个callback参数给服务端，服务端返回数据时将callback作为函数名包裹JSON数据，客户端定制函数处理返回的数据。</p>
+<p>jsonp.html页面代码如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/1999/xhtml"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="actionscript">    <span class="comment">// 得到航班信息查询结果后的回调函数</span></span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> flightHandler = <span class="function"><span class="keyword">function</span><span class="params">(data)</span></span>&#123;</span></span><br><span class="line"><span class="actionscript">        alert(<span class="string">'你查询的航班结果是：票价 '</span> + data.price + <span class="string">' 元，'</span> + <span class="string">'余票 '</span> + data.tickets + <span class="string">' 张。'</span>);</span></span><br><span class="line">    &#125;;</span><br><span class="line"><span class="actionscript">    <span class="comment">// 提供jsonp服务的url地址（不管是什么类型的地址，最终生成的返回值都是一段javascript代码）</span></span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> url = <span class="string">"http://flightQuery.com/jsonp/flightResult.aspx?code=CA1998&amp;callback=flightHandler"</span>;</span></span><br><span class="line"><span class="actionscript">    <span class="comment">// 创建script标签，设置其属性</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</span></span><br><span class="line"><span class="actionscript">    script.setAttribute(<span class="string">'src'</span>, url);</span></span><br><span class="line"><span class="actionscript">    <span class="comment">// 把script标签加入head，此时调用开始</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.getElementsByTagName(<span class="string">'head'</span>)[<span class="number">0</span>].appendChild(script);</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>remote.js文件代码如下：</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">flightHandler(&#123;</span><br><span class="line">    <span class="string">"code"</span>: <span class="string">"CA1998"</span>,</span><br><span class="line">    <span class="string">"price"</span>: <span class="number">1780</span>,</span><br><span class="line">    <span class="string">"tickets"</span>: <span class="number">5</span></span><br><span class="line">&#125;)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>对于实际应用过程中 callback（flightHandler） 的名称在后台实现是动态输出的。</p>
+<h2 id="0x02-Json劫持"><a href="#0x02-Json劫持" class="headerlink" title="0x02 Json劫持"></a>0x02 Json劫持</h2><p>JSON 劫持又为“ JSON Hijacking ”，最开始提出这个概念大概是在 2008 年国外有安全研究人员提到这个 JSONP 带来的风险。其实这个问题属于 CSRF（ Cross-site request forgery 跨站请求伪造）攻击范畴。当某网站通过 JSONP 的方式来快域（一般为子域）传递用户认证后的敏感信息时，攻击者可以构造恶意的 JSONP 调用页面，诱导被攻击者访问来达到截取用户敏感信息的目的。一个典型的 JSON Hijacking 攻击代码：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript"><span class="function"><span class="keyword">function</span> <span class="title">wooyun</span><span class="params">(v)</span></span>&#123;</span></span><br><span class="line">    alert(v.username);</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://js.login.360.cn/?o=sso&amp;m=info&amp;func=wooyun"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当然还是随着安全意识和技术水平的提高，很多甲方公司开始重视此类安全问题，开始着手研究解决方案。其中一个方案就是验证 JSON 文件调用的来源（ Referer ）。这个方案是主要利用了 <code>&lt;script&gt;</code> 远程加载 JSON 文件时会发送 Referer ，在网站输出 JSON 数据时判断 Referer 是不是白名单合法的就可以进行防御！这个方法是可行的，但是具体实现过程中又容易导致 2 总常见的逻辑问题：<br>1、referer过滤不严谨<br>2、空 Referer</p>
+<h2 id="0x02-Callback可定义"><a href="#0x02-Callback可定义" class="headerlink" title="0x02 Callback可定义"></a>0x02 Callback可定义</h2><p>在本文开头介绍 JSON 原理的就说明了可能是为了方便前段开发调用，一般输出时都是可定义的，开头提到的 php 实现的代码：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="comment">//getUsers.php</span></span></span><br><span class="line"><span class="php">$callback = $_GET[<span class="string">'callback'</span>];</span></span><br><span class="line"><span class="php"><span class="keyword">print</span> $callback.<span class="string">'(&#123;"id" : "1","name" : "知道创宇"&#125;);'</span>;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>也就是这个可定义化的 callback 名输出点又导致了各种安全问题，当然严格上来说里面提到的具体数据输出也是可以利用的，只是本文重点强调的 callback 这个输出点。<br>1、Content-Type 与 XSS 漏洞</p>
+<p>在早期 JSON 出现时候，大家都没有合格的编码习惯。再输出 JSON 时，没有严格定义好 Content-Type（ Content-Type: application/json ）然后加上 callback 这个输出点没有进行过滤直接导致了一个典型的 XSS 漏洞，上面演示的 getUsers.php 就存在这个问题：<br><code>http://127.0.0.1/getUsers.php?callback=&lt;script&gt;alert(/xss/)&lt;/script&gt;</code><br>对于 Content-Type 来说早期还有一部分人比较喜欢使用 application / javascript  而这个头在 IE 等浏览器下一样可以解析 HTML 导致 XSS 漏洞。对于这种类型的漏洞，防御主要是从两个点去部署的：</p>
+<p>a、严格定义 Content-Type: application / json</p>
+<p>这样的防御机制导致了浏览器不解析恶意插入的 XSS 代码（直接访问提示文件下载）。但是凡事都有个案，在 IE 的进化过程中就出现过通过一些技巧绕过 Content-Type 防御解析 html ，比如在 IE6、7 等版本时请求的 URL 文件后面加一个 /x.html 就可以解析 html （<code>http://127.0.0.1/getUsers.php/x.html?callback=&lt;script&gt;alert(/xss/)&lt;/script&gt;</code>） 具体参考：<a href="http://hi.baidu.com/hi_heige/item/f1ecde01c4af3ed61ef04646" target="_blank" rel="noopener">http://hi.baidu.com/hi_heige/item/f1ecde01c4af3ed61ef04646</a></p>
+<p>b、过滤 callback 以及 JSON 数据输出</p>
+<p>这样的防御机制是比较传统的攻防思维，对输出点进行 xss 过滤。又是一个看上去很完美的解决方案，但是往往都是“事与愿违”。当年( 2011 年)一个 utf7-BOM 就复活了 n 个 XSS 漏洞。这种攻击方式主要还是存在与 IE 里(注在 IE 较新版本里已经“修复”) 也就是当我们在 callback 点输出 +/v8 这样的 utf7-BOM 的时候， IE 浏览器会把当前执行的编码认为是 utf7 ,所以我们通过 utf7 提交的 XSS 代码会被自动解码并执行。如：</p>
+]]></content>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>JSONP</tag>
+        <tag>Web安全</tag>
+        <tag>[object Object]</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Pwn-函数调用栈</title>
+    <url>/2019/10/15/Pwn-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88/</url>
+    <content><![CDATA[<h1 id="Pwn-函数调用栈学习"><a href="#Pwn-函数调用栈学习" class="headerlink" title="Pwn-函数调用栈学习"></a>Pwn-函数调用栈学习</h1><hr>
+<p>函数调用栈是指程序运行时内存一段连续的区域，用来保存函数运行时的状态信息，包括函数参数与局部变量等。称之为“栈”是因为发生函数调用时，调用函数（caller）的状态被保存在栈内，被调用函数（callee）的状态被压入调用栈的栈顶；在函数调用结束时，栈顶的函数（callee）状态被弹出，栈顶恢复到调用函数（caller）的状态。函数调用栈在内存中从高地址向低地址生长，所以栈顶对应的内存地址在压栈时变小，退栈时变大。<br><img src="/2019/10/15/Pwn-函数调用栈/1.png" alt><br>函数调用发生和结束时调用栈的变化<br>函数状态主要涉及三个寄存器：ESP,EBP,EIP。<br>ESP（栈顶指针extended stack pointer）用来存储函数调用栈的栈顶地址，在压栈和退栈时发生变化。<br>EBP（栈底指针extended base pointer）用来存储当前函数状态的基地址，在函数运行时不变，可以用来索引确定函数参数或局部变量的位置。<br>EIP  用来存储即将执行的程序指令的地址，cpu按照EIP的存储内容读取指令并执行，EIP随之指向相邻的下一条指令，如此反复，程序就得以连续执行命令。<br>32位前缀是E(ESP、EBP、EIP)，64位前缀是R(RSP、RBP、RIP)</p>
+]]></content>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>[object Object]</tag>
+        <tag>Pwn</tag>
       </tags>
   </entry>
   <entry>
@@ -59,7 +87,7 @@
 
 <figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">input</span>: <span class="number">%26</span>lt<span class="number">%5</span>cu4e00<span class="number">%26</span>gt</span><br></pre></td></tr></table></figure>
 
-<p>假设我们输入的值为 <em>%26lt%5cu4e00%26gt</em> 并通过GET请求提交至服务器，服务器回对我们输入的值进行URL解码，变成 <em>&amp;lt\u4e00&amp;gt</em> ，服务端传回数据给浏览器，浏览器生成了DOM树，此时的代码是这样的：</p>
+<p>假设我们输入的值为 <strong>%26lt%5cu4e00%26gt</strong> 并通过GET请求提交至服务器，服务器回对我们输入的值进行URL解码，变成 <strong>&amp;lt\u4e00&amp;gt</strong> ，服务端传回数据给浏览器，浏览器生成了DOM树，此时的代码是这样的：</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&amp;lt\u4e00&amp;gt');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>我们可以在页面右键点击 <strong>查看网站源代码</strong> 查看源码。（注意不是F12，F12的检查元素功能看到是的经过浏览器渲染后的内容)</p>
@@ -79,8 +107,52 @@
       </categories>
       <tags>
         <tag>渗透测试</tag>
-        <tag>XSS</tag>
         <tag>Web安全</tag>
+        <tag>XSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python-urllib.parse模块</title>
+    <url>/2019/10/14/Python-urllib.parse%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<h1 id="Python-urllib-parse模块"><a href="#Python-urllib-parse模块" class="headerlink" title="Python-urllib.parse模块"></a>Python-urllib.parse模块</h1><hr><h2 id="模块简介"><a href="#模块简介" class="headerlink" title="模块简介"></a>模块简介</h2><p>url.parse :定义了url的标准接口，实现url的各种抽取<br>parse模块的使用：url的解析，合并，编码，解码</p><h3 id="1、urlparse"><a href="#1、urlparse" class="headerlink" title="1、urlparse()"></a>1、urlparse()</h3><figure class="highlight subunit"><table><tr><td class="code"><pre><span class="line">from urllib.parse import urlparse</span><br><span class="line"><span class="keyword">test </span>= urlparse("https://www.baidu.com/test.php?id=1")</span><br><span class="line">print (test)</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">ParseResult(<span class="attribute">scheme</span>=<span class="string">'https'</span>, <span class="attribute">netloc</span>=<span class="string">'www.baidu.com'</span>, <span class="attribute">path</span>=<span class="string">'/test.php'</span>, <span class="attribute">params</span>=<span class="string">''</span>, <span class="attribute">query</span>=<span class="string">'id=1'</span>, <span class="attribute">fragment</span>=<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+
+<p>将url分为6个部分，返回一个包含6个字符串项目的元组：协议、位置、路径、参数、查询、片段。</p>
+<h3 id="2、urlsplit"><a href="#2、urlsplit" class="headerlink" title="2、urlsplit()"></a>2、urlsplit()</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">from urllib<span class="selector-class">.parse</span> import urlsplit</span><br><span class="line">test2= urlsplit(<span class="string">"https://www.baidu.com/test.php?id=1"</span>)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(test2)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">SplitResult(<span class="attribute">scheme</span>=<span class="string">'https'</span>, <span class="attribute">netloc</span>=<span class="string">'www.baidu.com'</span>, <span class="attribute">path</span>=<span class="string">'/test.php'</span>, <span class="attribute">query</span>=<span class="string">'id=1'</span>, <span class="attribute">fragment</span>=<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+
+<p>和urlparse差不多，将url分为5部分，返回一个包含5个字符串项目的元组：协议、位置、路径、查询、片段。</p>
+<h3 id="3、urlunparse"><a href="#3、urlunparse" class="headerlink" title="3、urlunparse()"></a>3、urlunparse()</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">from urllib<span class="selector-class">.parse</span> import urlunparse</span><br><span class="line">url_parmas = (<span class="string">'https'</span>, <span class="string">'baidu.com'</span>, <span class="string">'/info/123456'</span>, <span class="string">''</span>, <span class="string">'wd=123&amp;page=20'</span>, <span class="string">'home'</span>)</span><br><span class="line">result = urlunparse(url_parmas)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(result)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>baidu.com<span class="regexp">/info/</span><span class="number">123456</span>?wd=<span class="number">123</span>&amp;page=<span class="number">20</span><span class="comment">#home</span></span><br></pre></td></tr></table></figure>
+
+<p>实现URL的构造，<strong>def urlunparse(components)</strong>其中components:是一个可迭代对象，长度必须为6</p>
+<h3 id="4、urljoin"><a href="#4、urljoin" class="headerlink" title="4、urljoin()"></a>4、urljoin()</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">from urllib.parse import urljoin</span><br><span class="line">base_url = <span class="string">"https://www.baidu.com/home1/addurl/content?id=1"</span></span><br><span class="line">sub_url = <span class="string">"/home2/addurl/content?id=2"</span></span><br><span class="line">print (urljoin(base_url,sub_url))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>www.baidu.com<span class="regexp">/home2/</span>addurl<span class="regexp">/content?id=2</span></span><br></pre></td></tr></table></figure>
+
+<p>传递一个基础链接,根据基础链接可以将某一个不完整的链接拼接为一个完整链接</p>
+<h3 id="5、urlencode"><a href="#5、urlencode" class="headerlink" title="5、urlencode()"></a>5、urlencode()</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">from urllib<span class="selector-class">.parse</span> import urlencode</span><br><span class="line">test1 = &#123;</span><br><span class="line">    <span class="string">"id"</span>:<span class="string">"1"</span>,</span><br><span class="line">    <span class="string">"page"</span>:<span class="number">20</span></span><br><span class="line">&#125;</span><br><span class="line">test1_str = urlencode(test1)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(test1_str)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">id</span>=<span class="number">1</span>&amp;page=<span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<p>urlencode()将字典构形式的参数序列化为url编码后的字符串（常用来构造get请求和post请求的参数）key1=value1&amp;key2=value2</p>
+<h3 id="6、qoute"><a href="#6、qoute" class="headerlink" title="6、qoute()"></a>6、qoute()</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">from urllib<span class="selector-class">.parse</span> import quote</span><br><span class="line">word = <span class="string">"中文"</span></span><br><span class="line">url = <span class="string">'http://www.baidu.com/s?wd='</span>+quote(word)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(quote(word)</span></span>)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(url)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">%E4</span><span class="symbol">%B8</span><span class="symbol">%AD</span><span class="symbol">%E6</span><span class="symbol">%96</span><span class="symbol">%87</span></span><br><span class="line">http://www.baidu.com/s?wd=<span class="symbol">%E4</span><span class="symbol">%B8</span><span class="symbol">%AD</span><span class="symbol">%E6</span><span class="symbol">%96</span><span class="symbol">%87</span></span><br></pre></td></tr></table></figure>
+
+<p>quote()可以将中文转换为URL编码格式</p>
+<hr>
+<h3 id="本文作者：Sh4Nn0n"><a href="#本文作者：Sh4Nn0n" class="headerlink" title="本文作者：Sh4Nn0n"></a>本文作者：Sh4Nn0n</h3><h3 id="本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。"><a href="#本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。" class="headerlink" title="本文首发于Sh4Nn0n’s Blog，写文不易，转载请注明出处。"></a>本文首发于<a href="http://www.sh4nn0n.com" target="_blank" rel="noopener">Sh4Nn0n’s Blog</a>，写文不易，转载请注明出处。</h3>]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>

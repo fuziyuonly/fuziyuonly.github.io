@@ -56,18 +56,21 @@
   };
 </script>
 
-  <meta name="description" content="甲方安全小白帽，欢迎交流~">
-<meta name="keywords" content="hacker">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Sh4Nn0n&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/Python/index.html">
+  <meta name="description" content="Pwn-函数调用栈学习 函数调用栈是指程序运行时内存一段连续的区域，用来保存函数运行时的状态信息，包括函数参数与局部变量等。称之为“栈”是因为发生函数调用时，调用函数（caller）的状态被保存在栈内，被调用函数（callee）的状态被压入调用栈的栈顶；在函数调用结束时，栈顶的函数（callee）状态被弹出，栈顶恢复到调用函数（caller）的状态。函数调用栈在内存中从高地址向低地址生长，所以栈顶">
+<meta name="keywords" content="渗透测试,[object Object],Pwn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pwn-函数调用栈">
+<meta property="og:url" content="http://yoursite.com/2019/10/15/Pwn-函数调用栈/index.html">
 <meta property="og:site_name" content="Sh4Nn0n&#39;s Blog">
-<meta property="og:description" content="甲方安全小白帽，欢迎交流~">
+<meta property="og:description" content="Pwn-函数调用栈学习 函数调用栈是指程序运行时内存一段连续的区域，用来保存函数运行时的状态信息，包括函数参数与局部变量等。称之为“栈”是因为发生函数调用时，调用函数（caller）的状态被保存在栈内，被调用函数（callee）的状态被压入调用栈的栈顶；在函数调用结束时，栈顶的函数（callee）状态被弹出，栈顶恢复到调用函数（caller）的状态。函数调用栈在内存中从高地址向低地址生长，所以栈顶">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/10/15/Pwn-函数调用栈/1.png">
+<meta property="og:updated_time" content="2019-10-15T08:38:16.980Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sh4Nn0n&#39;s Blog">
-<meta name="twitter:description" content="甲方安全小白帽，欢迎交流~">
-  <link rel="canonical" href="http://yoursite.com/tags/Python/">
+<meta name="twitter:title" content="Pwn-函数调用栈">
+<meta name="twitter:description" content="Pwn-函数调用栈学习 函数调用栈是指程序运行时内存一段连续的区域，用来保存函数运行时的状态信息，包括函数参数与局部变量等。称之为“栈”是因为发生函数调用时，调用函数（caller）的状态被保存在栈内，被调用函数（callee）的状态被压入调用栈的栈顶；在函数调用结束时，栈顶的函数（callee）状态被弹出，栈顶恢复到调用函数（caller）的状态。函数调用栈在内存中从高地址向低地址生长，所以栈顶">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/15/Pwn-函数调用栈/1.png">
+  <link rel="canonical" href="http://yoursite.com/2019/10/15/Pwn-函数调用栈/">
 
 
 <script id="page-configurations">
@@ -75,13 +78,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>标签: Python | Sh4Nn0n's Blog</title>
+  <title>Pwn-函数调用栈 | Sh4Nn0n's Blog</title>
   
 
 
@@ -249,139 +252,119 @@
         <div class="content-wrap">
             
 
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-  
-
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
   
   
   
-  <div class="post-block tag">
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">Python<small>标签</small>
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/15/Pwn-函数调用栈/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sh4Nn0n">
+      <meta itemprop="description" content="甲方安全小白帽，欢迎交流~">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sh4Nn0n's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Pwn-函数调用栈
+
+          
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-15 15:49:16 / 修改时间：16:38:16" itemprop="dateCreated datePublished" datetime="2019-10-15T15:49:16+08:00">2019-10-15</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+        <h1 id="Pwn-函数调用栈学习"><a href="#Pwn-函数调用栈学习" class="headerlink" title="Pwn-函数调用栈学习"></a>Pwn-函数调用栈学习</h1><hr>
+<p>函数调用栈是指程序运行时内存一段连续的区域，用来保存函数运行时的状态信息，包括函数参数与局部变量等。称之为“栈”是因为发生函数调用时，调用函数（caller）的状态被保存在栈内，被调用函数（callee）的状态被压入调用栈的栈顶；在函数调用结束时，栈顶的函数（callee）状态被弹出，栈顶恢复到调用函数（caller）的状态。函数调用栈在内存中从高地址向低地址生长，所以栈顶对应的内存地址在压栈时变小，退栈时变大。<br><img src="/2019/10/15/Pwn-函数调用栈/1.png" alt><br>函数调用发生和结束时调用栈的变化<br>函数状态主要涉及三个寄存器：ESP,EBP,EIP。<br>ESP（栈顶指针extended stack pointer）用来存储函数调用栈的栈顶地址，在压栈和退栈时发生变化。<br>EBP（栈底指针extended base pointer）用来存储当前函数状态的基地址，在函数运行时不变，可以用来索引确定函数参数或局部变量的位置。<br>EIP  用来存储即将执行的程序指令的地址，cpu按照EIP的存储内容读取指令并执行，EIP随之指向相邻的下一条指令，如此反复，程序就得以连续执行命令。<br>32位前缀是E(ESP、EBP、EIP)，64位前缀是R(RSP、RBP、RIP)</p>
 
-  
-  
+    </div>
 
-  
     
-    <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
-    </div>
-  
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-10-16T19:52:54+08:00"
-              content="2019-10-16">
-          10-16
-        </time>
-      </div>
-
-      <h2 class="post-title">
+    
+    
         
-          <a class="post-title-link" href="/2019/10/16/python-Threading模块/" itemprop="url">
-            <span itemprop="name">python-Threading模块</span>
-          </a>
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/渗透测试/" rel="tag"># 渗透测试</a>
+            
+              <a href="/tags/object-Object/" rel="tag"># [object Object]</a>
+            
+              <a href="/tags/Pwn/" rel="tag"># Pwn</a>
+            
+          </div>
         
-      </h2>
 
-    </header>
-  </article>
-
-
-
-  
-  
-
-  
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-10-14T00:00:00+08:00"
-              content="2019-10-14">
-          10-14
-        </time>
-      </div>
-
-      <h2 class="post-title">
         
-          <a class="post-title-link" href="/2019/10/14/Python-urllib.parse模块/" itemprop="url">
-            <span itemprop="name">Python-urllib.parse模块</span>
-          </a>
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/14/XSS-编码解码/" rel="next" title="XSS-编码解码">
+                  <i class="fa fa-chevron-left"></i> XSS-编码解码
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/10/16/JSONP-安全攻防技术/" rel="prev" title="JSONP-安全攻防技术">
+                  JSONP-安全攻防技术 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
         
-      </h2>
-
-    </header>
-  </article>
-
-
-
-  
-  
-
-  
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-10-12T00:00:00+08:00"
-              content="2019-10-12">
-          10-12
-        </time>
-      </div>
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/10/12/Python-正则表达式/" itemprop="url">
-            <span itemprop="name">Python-正则表达式</span>
-          </a>
-        
-      </h2>
-
-    </header>
-  </article>
-
-
-
-    </div>
+      </footer>
+    
   </div>
   
   
   
+  </article>
 
-  
-
+  </div>
 
 
           </div>
@@ -400,6 +383,11 @@
 
   <aside class="sidebar">
     <div class="sidebar-inner">
+        
+        
+        
+        
+      
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -412,6 +400,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pwn-函数调用栈学习"><span class="nav-text">Pwn-函数调用栈学习</span></a></li></ol></div>
+        
       </div>
       <!--/noindex-->
 

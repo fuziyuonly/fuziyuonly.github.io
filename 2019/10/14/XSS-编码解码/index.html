@@ -57,7 +57,7 @@
 </script>
 
   <meta name="description" content="跨站脚本攻击（XSS）-编码剖析 前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。 1、浏览器的解码上图显示了浏览器从接收代码，到渲染完成的过程：1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。2、CSS">
-<meta name="keywords" content="渗透测试,XSS,Web安全">
+<meta name="keywords" content="渗透测试,Web安全,XSS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XSS-编码解码">
 <meta property="og:url" content="http://yoursite.com/2019/10/14/XSS-编码解码/index.html">
@@ -66,7 +66,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/2019/10/14/XSS-编码解码/1.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/10/14/XSS-编码解码/2.png">
-<meta property="og:updated_time" content="2019-10-14T11:13:02.691Z">
+<meta property="og:updated_time" content="2019-10-14T12:51:25.359Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS-编码解码">
 <meta name="twitter:description" content="跨站脚本攻击（XSS）-编码剖析 前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。 1、浏览器的解码上图显示了浏览器从接收代码，到渲染完成的过程：1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。2、CSS">
@@ -290,7 +290,7 @@
                 
               
 
-              <time title="创建时间：2019-10-14 00:00:00 / 修改时间：19:13:02" itemprop="dateCreated datePublished" datetime="2019-10-14T00:00:00+08:00">2019-10-14</time>
+              <time title="创建时间：2019-10-14 00:00:00 / 修改时间：20:51:25" itemprop="dateCreated datePublished" datetime="2019-10-14T00:00:00+08:00">2019-10-14</time>
             </span>
           
             
@@ -334,7 +334,7 @@
 
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">input</span>: <span class="number">%26</span>lt<span class="number">%5</span>cu4e00<span class="number">%26</span>gt</span><br></pre></td></tr></table></figure>
 
-<p>假设我们输入的值为 <em>%26lt%5cu4e00%26gt</em> 并通过GET请求提交至服务器，服务器回对我们输入的值进行URL解码，变成 <em>&amp;lt\u4e00&amp;gt</em> ，服务端传回数据给浏览器，浏览器生成了DOM树，此时的代码是这样的：</p>
+<p>假设我们输入的值为 <strong>%26lt%5cu4e00%26gt</strong> 并通过GET请求提交至服务器，服务器回对我们输入的值进行URL解码，变成 <strong>&amp;lt\u4e00&amp;gt</strong> ，服务端传回数据给浏览器，浏览器生成了DOM树，此时的代码是这样的：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&amp;lt\u4e00&amp;gt');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>我们可以在页面右键点击 <strong>查看网站源代码</strong> 查看源码。（注意不是F12，F12的检查元素功能看到是的经过浏览器渲染后的内容)</p>
@@ -365,9 +365,9 @@
             
               <a href="/tags/渗透测试/" rel="tag"># 渗透测试</a>
             
-              <a href="/tags/XSS/" rel="tag"># XSS</a>
-            
               <a href="/tags/Web安全/" rel="tag"># Web安全</a>
+            
+              <a href="/tags/XSS/" rel="tag"># XSS</a>
             
           </div>
         
@@ -377,8 +377,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/10/12/Python-正则表达式/" rel="next" title="Python-正则表达式">
-                  <i class="fa fa-chevron-left"></i> Python-正则表达式
+                <a href="/2019/10/14/Python-urllib.parse模块/" rel="next" title="Python-urllib.parse模块">
+                  <i class="fa fa-chevron-left"></i> Python-urllib.parse模块
                 </a>
               
             </div>
@@ -387,8 +387,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/2019/10/14/Python-urllib.parse模块/" rel="prev" title="Python-urllib.parse模块">
-                  Python-urllib.parse模块 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/10/15/Pwn-函数调用栈/" rel="prev" title="Pwn-函数调用栈">
+                  Pwn-函数调用栈 <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -457,7 +457,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -479,7 +479,7 @@
       
       <div class="site-state-item site-state-tags">
         
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span>
         
       </div>
@@ -506,6 +506,18 @@
   </div>
 
 
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://lingwu111.github.io/" title="https://lingwu111.github.io/" rel="noopener" target="_blank">lingwu</a>
+        </li>
+      
+    </ul>
+  </div>
 
       </div>
 
