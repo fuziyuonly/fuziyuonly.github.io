@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-10-16T12:55:31.250Z</updated>
+  <updated>2020-03-05T08:45:34.423Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vulnhub-Kioptrix-lv.1-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/</id>
+    <published>2020-03-05T08:43:13.000Z</published>
+    <updated>2020-03-05T08:45:34.423Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;tags:&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;渗透测试&lt;/li&gt;
+&lt;li&gt;Vulnhub&lt;/li&gt;
+&lt;li&gt;OSCP&lt;br&gt;categories:&lt;/li&gt;
+&lt;li&gt;OSCP&lt;/li&gt;
+&lt;/ul&gt;&lt;hr&gt;&lt;h2 id=&quot;Kioptrix-Level-1&quot;&gt;&lt;a href=&quot;#Kioptrix-Level-1&quot; class=&quot;headerlink&quot; title=&quot;Kioptrix Level 1&quot;&gt;&lt;/a&gt;Kioptrix Level 1&lt;/h2&gt;&lt;hr&gt;&lt;h3 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h3&gt;&lt;p&gt;查看靶机ip&lt;/p&gt;&lt;figure class=&quot;highlight vim&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;root@kali:~# &lt;span class=&quot;keyword&quot;&gt;nmap&lt;/span&gt; -&lt;span class=&quot;keyword&quot;&gt;sn&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;208.1&lt;/span&gt;/&lt;span class=&quot;number&quot;&gt;24&lt;/span&gt; -T4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Starting Nmap &lt;span class=&quot;number&quot;&gt;7.70&lt;/span&gt; ( http&lt;span class=&quot;variable&quot;&gt;s:&lt;/span&gt;//&lt;span class=&quot;keyword&quot;&gt;nmap&lt;/span&gt;.org ) at &lt;span class=&quot;number&quot;&gt;2020&lt;/span&gt;-&lt;span class=&quot;number&quot;&gt;01&lt;/span&gt;-&lt;span class=&quot;number&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;02&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;42&lt;/span&gt; EST&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Nmap scan report &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; bogon (&lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;208.136&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Host &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt; (&lt;span class=&quot;number&quot;&gt;0.00014&lt;/span&gt;s latency).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;MAC Addres&lt;span class=&quot;variable&quot;&gt;s:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;00&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;C:&lt;span class=&quot;number&quot;&gt;29&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;52&lt;/span&gt;:D9:&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt; (VMware)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Host &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Nmap done: &lt;span class=&quot;number&quot;&gt;256&lt;/span&gt; IP addresses (&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt; hosts &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt;) scanned in &lt;span class=&quot;number&quot;&gt;1.93&lt;/span&gt; seconds&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>python-Threading模块</title>
@@ -94,27 +116,6 @@
   </entry>
   
   <entry>
-    <title>Python-urllib.parse模块</title>
-    <link href="http://yoursite.com/2019/10/14/Python-urllib.parse%E6%A8%A1%E5%9D%97/"/>
-    <id>http://yoursite.com/2019/10/14/Python-urllib.parse模块/</id>
-    <published>2019-10-13T16:00:00.000Z</published>
-    <updated>2019-10-14T12:51:46.269Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Python-urllib-parse模块&quot;&gt;&lt;a href=&quot;#Python-urllib-parse模块&quot; class=&quot;headerlink&quot; title=&quot;Python-urllib.parse模块&quot;&gt;&lt;/a&gt;Python-urllib.parse模块&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;模块简介&quot;&gt;&lt;a href=&quot;#模块简介&quot; class=&quot;headerlink&quot; title=&quot;模块简介&quot;&gt;&lt;/a&gt;模块简介&lt;/h2&gt;&lt;p&gt;url.parse :定义了url的标准接口，实现url的各种抽取&lt;br&gt;parse模块的使用：url的解析，合并，编码，解码&lt;/p&gt;&lt;h3 id=&quot;1、urlparse&quot;&gt;&lt;a href=&quot;#1、urlparse&quot; class=&quot;headerlink&quot; title=&quot;1、urlparse()&quot;&gt;&lt;/a&gt;1、urlparse()&lt;/h3&gt;&lt;figure class=&quot;highlight subunit&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;from urllib.parse import urlparse&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;test &lt;/span&gt;= urlparse(&quot;https://www.baidu.com/test.php?id=1&quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;print (test)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
-    
-    
-      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
     <title>XSS-编码解码</title>
     <link href="http://yoursite.com/2019/10/14/XSS-%E7%BC%96%E7%A0%81%E8%A7%A3%E7%A0%81/"/>
     <id>http://yoursite.com/2019/10/14/XSS-编码解码/</id>
@@ -138,6 +139,27 @@
       <category term="Web安全" scheme="http://yoursite.com/tags/Web%E5%AE%89%E5%85%A8/"/>
     
       <category term="XSS" scheme="http://yoursite.com/tags/XSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python-urllib.parse模块</title>
+    <link href="http://yoursite.com/2019/10/14/Python-urllib.parse%E6%A8%A1%E5%9D%97/"/>
+    <id>http://yoursite.com/2019/10/14/Python-urllib.parse模块/</id>
+    <published>2019-10-13T16:00:00.000Z</published>
+    <updated>2019-10-14T12:51:46.269Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Python-urllib-parse模块&quot;&gt;&lt;a href=&quot;#Python-urllib-parse模块&quot; class=&quot;headerlink&quot; title=&quot;Python-urllib.parse模块&quot;&gt;&lt;/a&gt;Python-urllib.parse模块&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;模块简介&quot;&gt;&lt;a href=&quot;#模块简介&quot; class=&quot;headerlink&quot; title=&quot;模块简介&quot;&gt;&lt;/a&gt;模块简介&lt;/h2&gt;&lt;p&gt;url.parse :定义了url的标准接口，实现url的各种抽取&lt;br&gt;parse模块的使用：url的解析，合并，编码，解码&lt;/p&gt;&lt;h3 id=&quot;1、urlparse&quot;&gt;&lt;a href=&quot;#1、urlparse&quot; class=&quot;headerlink&quot; title=&quot;1、urlparse()&quot;&gt;&lt;/a&gt;1、urlparse()&lt;/h3&gt;&lt;figure class=&quot;highlight subunit&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;from urllib.parse import urlparse&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;test &lt;/span&gt;= urlparse(&quot;https://www.baidu.com/test.php?id=1&quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;print (test)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
   </entry>
   

