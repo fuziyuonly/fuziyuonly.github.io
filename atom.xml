@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-05T08:45:34.423Z</updated>
+  <updated>2020-03-06T03:20:15.043Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,24 +17,270 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>vulnhub-Kioptrix-lv.1-WalkThrough</title>
-    <link href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/"/>
-    <id>http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/</id>
-    <published>2020-03-05T08:43:13.000Z</published>
-    <updated>2020-03-05T08:45:34.423Z</updated>
+    <title>vulnhub-mrRobot-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/06/vulnhub-mrRobot-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/06/vulnhub-mrRobot-WalkThrough/</id>
+    <published>2020-03-06T03:14:01.000Z</published>
+    <updated>2020-03-06T03:20:15.043Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;tags:&lt;/p&gt;&lt;ul&gt;
-&lt;li&gt;渗透测试&lt;/li&gt;
-&lt;li&gt;Vulnhub&lt;/li&gt;
-&lt;li&gt;OSCP&lt;br&gt;categories:&lt;/li&gt;
-&lt;li&gt;OSCP&lt;/li&gt;
-&lt;/ul&gt;&lt;hr&gt;&lt;h2 id=&quot;Kioptrix-Level-1&quot;&gt;&lt;a href=&quot;#Kioptrix-Level-1&quot; class=&quot;headerlink&quot; title=&quot;Kioptrix Level 1&quot;&gt;&lt;/a&gt;Kioptrix Level 1&lt;/h2&gt;&lt;hr&gt;&lt;h3 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h3&gt;&lt;p&gt;查看靶机ip&lt;/p&gt;&lt;figure class=&quot;highlight vim&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;root@kali:~# &lt;span class=&quot;keyword&quot;&gt;nmap&lt;/span&gt; -&lt;span class=&quot;keyword&quot;&gt;sn&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;208.1&lt;/span&gt;/&lt;span class=&quot;number&quot;&gt;24&lt;/span&gt; -T4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Starting Nmap &lt;span class=&quot;number&quot;&gt;7.70&lt;/span&gt; ( http&lt;span class=&quot;variable&quot;&gt;s:&lt;/span&gt;//&lt;span class=&quot;keyword&quot;&gt;nmap&lt;/span&gt;.org ) at &lt;span class=&quot;number&quot;&gt;2020&lt;/span&gt;-&lt;span class=&quot;number&quot;&gt;01&lt;/span&gt;-&lt;span class=&quot;number&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;02&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;42&lt;/span&gt; EST&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Nmap scan report &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; bogon (&lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;208.136&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Host &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt; (&lt;span class=&quot;number&quot;&gt;0.00014&lt;/span&gt;s latency).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;MAC Addres&lt;span class=&quot;variable&quot;&gt;s:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;00&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;C:&lt;span class=&quot;number&quot;&gt;29&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;52&lt;/span&gt;:D9:&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt; (VMware)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Host &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Nmap done: &lt;span class=&quot;number&quot;&gt;256&lt;/span&gt; IP addresses (&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt; hosts &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt;) scanned in &lt;span class=&quot;number&quot;&gt;1.93&lt;/span&gt; seconds&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      &lt;h1 id=&quot;mrRobot&quot;&gt;&lt;a href=&quot;#mrRobot&quot; class=&quot;headerlink&quot; title=&quot;mrRobot&quot;&gt;&lt;/a&gt;mrRobot&lt;/h1&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;figure class=&quot;highlight lsl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nmap -sP &lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.0&lt;/span&gt;/&lt;span class=&quot;number&quot;&gt;24&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nmap -Pn -sS -vv --max-retries &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; --max-scan-delay &lt;span class=&quot;number&quot;&gt;20&lt;/span&gt; --defeat-rst-ratelimit -T4 -p- -oN /root/$&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt; $&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nikto -h &lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.145&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;wpscan --url &lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.150&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
     
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="mrRobot" scheme="http://yoursite.com/tags/mrRobot/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-BTRsys-2-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/06/vulnhub-BTRsys-2-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/06/vulnhub-BTRsys-2-WalkThrough/</id>
+    <published>2020-03-06T02:29:19.000Z</published>
+    <updated>2020-03-06T02:31:29.669Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;BTRsys-2&quot;&gt;&lt;a href=&quot;#BTRsys-2&quot; class=&quot;headerlink&quot; title=&quot;BTRsys-2&quot;&gt;&lt;/a&gt;BTRsys-2&lt;/h1&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;figure class=&quot;highlight elixir&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;root&lt;span class=&quot;variable&quot;&gt;@kali&lt;/span&gt;&lt;span class=&quot;symbol&quot;&gt;:~&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;# nmap -sP 192.168.208.1/24&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;root&lt;span class=&quot;variable&quot;&gt;@kali&lt;/span&gt;&lt;span class=&quot;symbol&quot;&gt;:~&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;# nikto -h 192.168.208.146&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h2 id=&quot;渗透测试&quot;&gt;&lt;a href=&quot;#渗透测试&quot; class=&quot;headerlink&quot; title=&quot;渗透测试&quot;&gt;&lt;/a&gt;渗透测试&lt;/h2&gt;&lt;p&gt;发现robots.txt里面有敏感路径&lt;br&gt;&lt;img src=&quot;/2020/03/06/vulnhub-BTRsys-2-WalkThrough/1.png&quot; alt&gt;&lt;br&gt;&lt;img src=&quot;/2020/03/06/vulnhub-BTRsys-2-WalkThrough/2.png&quot; alt&gt;&lt;br&gt;底部login in 尝试弱口令, admin/admin, 进来了&lt;br&gt;wordpress Edit Themes模块传php reverse shell&lt;br&gt;&lt;img src=&quot;/2020/03/06/vulnhub-BTRsys-2-WalkThrough/3.png&quot; alt&gt;&lt;br&gt;监听后访问&lt;br&gt;192.168.208.146/wordpress/wp-content/themes/twentyfourteen/404.php&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="BTRsys-2" scheme="http://yoursite.com/tags/BTRsys-2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-SkyTower-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/06/vulnhub-SkyTower-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/06/vulnhub-SkyTower-WalkThrough/</id>
+    <published>2020-03-06T02:11:59.000Z</published>
+    <updated>2020-03-06T02:13:57.973Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;SkyTower&quot;&gt;&lt;a href=&quot;#SkyTower&quot; class=&quot;headerlink&quot; title=&quot;SkyTower&quot;&gt;&lt;/a&gt;SkyTower&lt;/h1&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;figure class=&quot;highlight routeros&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;PORT     STATE   &lt;span class=&quot;built_in&quot;&gt; SERVICE &lt;/span&gt;   REASON&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22/tcp   filtered ssh        no-response&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80/tcp   open     http       syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3128/tcp open     squid-http syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;MAC Address: 00:0C:29:73:50:90 (VMware)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="SkyTower" scheme="http://yoursite.com/tags/SkyTower/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-Pwnlab_init-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/</id>
+    <published>2020-03-06T02:05:45.000Z</published>
+    <updated>2020-03-06T02:09:06.902Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Pwnlab-init&quot;&gt;&lt;a href=&quot;#Pwnlab-init&quot; class=&quot;headerlink&quot; title=&quot;Pwnlab_init&quot;&gt;&lt;/a&gt;Pwnlab_init&lt;/h1&gt;&lt;hr&gt;&lt;p&gt;至今为止遇到的比较头疼的靶机&lt;/p&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;h3 id=&quot;端口扫描&quot;&gt;&lt;a href=&quot;#端口扫描&quot; class=&quot;headerlink&quot; title=&quot;端口扫描&quot;&gt;&lt;/a&gt;端口扫描&lt;/h3&gt;&lt;figure class=&quot;highlight routeros&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# Nmap 7.80 scan initiated Wed Feb 19 02:30:14 2020 as: nmap -Pn -sS -vv --max-retries 1 --max-scan-delay 20 --defeat-rst-ratelimit -T4 -p- -oN /root/1.txt 192.168.208.147&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Nmap scan report &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; bogon (192.168.208.147)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Host is up, received arp-response (0.0028s latency).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Scanned at 2020-02-19 02:30:14 EST &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; 7s&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;Not&lt;/span&gt; shown: 65531 closed ports&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Reason: 65531 resets&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PORT      STATE&lt;span class=&quot;built_in&quot;&gt; SERVICE &lt;/span&gt;REASON&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80/tcp    open  http    syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;111/tcp   open  rpcbind syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3306/tcp  open  mysql   syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36379/tcp open  unknown syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;MAC Address: 00:0C:29:9A:6B:80 (VMware)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="Pwnlab_init" scheme="http://yoursite.com/tags/Pwnlab-init/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-GoldenEye-v1-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/06/vulnhub-GoldenEye-v1-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/06/vulnhub-GoldenEye-v1-WalkThrough/</id>
+    <published>2020-03-06T01:53:04.000Z</published>
+    <updated>2020-03-06T02:02:24.196Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;GoldenEye-v1&quot;&gt;&lt;a href=&quot;#GoldenEye-v1&quot; class=&quot;headerlink&quot; title=&quot;GoldenEye-v1&quot;&gt;&lt;/a&gt;GoldenEye-v1&lt;/h1&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;selector-tag&quot;&gt;netdiscover&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;eth0&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;-r&lt;/span&gt; 192&lt;span class=&quot;selector-class&quot;&gt;.168&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;&lt;img src=&quot;/2020/03/06/vulnhub-GoldenEye-v1-WalkThrough/1.png&quot; alt&gt;&lt;/p&gt;&lt;figure class=&quot;highlight routeros&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nmap -T4 -n -sS -p- --max-retries 1 -vv 192.168.208.143&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PORT      STATE&lt;span class=&quot;built_in&quot;&gt; SERVICE &lt;/span&gt;REASON&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25/tcp    open  smtp    syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80/tcp    open  http    syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55006/tcp open  unknown syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55007/tcp open  unknown syn-ack ttl 64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;MAC Address: 00:0C:29:86:8B:54 (VMware)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="GoldenEye" scheme="http://yoursite.com/tags/GoldenEye/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-SickOs1.2-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/06/vulnhub-SickOs1-2-WalkThrough/</id>
+    <published>2020-03-06T01:40:20.000Z</published>
+    <updated>2020-03-06T02:03:29.439Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;SickOs1-2&quot;&gt;&lt;a href=&quot;#SickOs1-2&quot; class=&quot;headerlink&quot; title=&quot;SickOs1.2&quot;&gt;&lt;/a&gt;SickOs1.2&lt;/h1&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;h3 id=&quot;ifconfig&quot;&gt;&lt;a href=&quot;#ifconfig&quot; class=&quot;headerlink&quot; title=&quot;ifconfig&quot;&gt;&lt;/a&gt;ifconfig&lt;/h3&gt;&lt;figure class=&quot;highlight ebnf&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;ifconfig&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;&lt;img src=&quot;/2020/03/06/vulnhub-SickOs1-2-WalkThrough/1.png&quot; alt&gt;&lt;/p&gt;&lt;h3 id=&quot;扫描ip&quot;&gt;&lt;a href=&quot;#扫描ip&quot; class=&quot;headerlink&quot; title=&quot;扫描ip&quot;&gt;&lt;/a&gt;扫描ip&lt;/h3&gt;&lt;figure class=&quot;highlight stylus&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;netdiscover -&lt;span class=&quot;selector-tag&quot;&gt;i&lt;/span&gt; eth0&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;&lt;img src=&quot;/2020/03/06/vulnhub-SickOs1-2-WalkThrough/2.png&quot; alt&gt;&lt;/p&gt;&lt;figure class=&quot;highlight lsl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nmap -sn &lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.1&lt;/span&gt;/&lt;span class=&quot;number&quot;&gt;24&lt;/span&gt; -T4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;&lt;img src=&quot;/2020/03/06/vulnhub-SickOs1-2-WalkThrough/3.png&quot; alt&gt;&lt;/p&gt;&lt;h3 id=&quot;端口探测&quot;&gt;&lt;a href=&quot;#端口探测&quot; class=&quot;headerlink&quot; title=&quot;端口探测&quot;&gt;&lt;/a&gt;端口探测&lt;/h3&gt;&lt;figure class=&quot;highlight lsl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nmap -Pn -vv -T4 -p- --max-retries &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; -sS --max-scan-delay &lt;span class=&quot;number&quot;&gt;20&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.140&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="SickOs1.2" scheme="http://yoursite.com/tags/SickOs1-2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-Kioptrix2014-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/</id>
+    <published>2020-03-05T09:27:51.000Z</published>
+    <updated>2020-03-05T09:31:31.310Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Kioptrix2014&quot;&gt;&lt;a href=&quot;#Kioptrix2014&quot; class=&quot;headerlink&quot; title=&quot;Kioptrix2014&quot;&gt;&lt;/a&gt;Kioptrix2014&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;figure class=&quot;highlight routeros&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;netdiscover -i eth0 -r 192.168.208.1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; Currently scanning: Finished!   |  &lt;span class=&quot;built_in&quot;&gt; Screen &lt;/span&gt;View: Unique Hosts                 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                                                                               &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; 5 Captured ARP Req/Rep packets, &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; 4 hosts.   Total size: 300               &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; _____________________________________________________________________________&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;built_in&quot;&gt; IP &lt;/span&gt;           At MAC&lt;span class=&quot;built_in&quot;&gt; Address &lt;/span&gt;    Count     Len  MAC Vendor / Hostname      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; -----------------------------------------------------------------------------&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; 192.168.208.1   00:50:56:c0:00:08      2     120  VMware, Inc.                &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; 192.168.208.2   00:50:56:fe:05:7a      1      60  VMware, Inc.                &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; 192.168.208.144 00:0c:29:a9:18:55      1      60  VMware, Inc.                &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; 192.168.208.254 00:50:56:fa:93:f0      1      60  VMware, Inc.&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-Kioptrix-lv.3-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/</id>
+    <published>2020-03-05T09:18:09.000Z</published>
+    <updated>2020-03-05T09:32:33.316Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Kioptrix-Level-3&quot;&gt;&lt;a href=&quot;#Kioptrix-Level-3&quot; class=&quot;headerlink&quot; title=&quot;Kioptrix Level 3&quot;&gt;&lt;/a&gt;Kioptrix Level 3&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;figure class=&quot;highlight routeros&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;root@kali:~# netdiscover -i eth0 -r 192.168.208.1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;built_in&quot;&gt; IP &lt;/span&gt;           At MAC&lt;span class=&quot;built_in&quot;&gt; Address &lt;/span&gt;    Count     Len  MAC Vendor / Hostname      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; -----------------------------------------------------------------------------&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; 192.168.208.142 00:0c:29:00:48:bf      1      60  VMware, Inc.&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="Kioptrix-lv.3" scheme="http://yoursite.com/tags/Kioptrix-lv-3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-Kioptrix-lv.2-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-2-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-2-WalkThrough/</id>
+    <published>2020-03-05T08:43:13.000Z</published>
+    <updated>2020-03-05T09:32:40.494Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Kioptrix-Level-2&quot;&gt;&lt;a href=&quot;#Kioptrix-Level-2&quot; class=&quot;headerlink&quot; title=&quot;Kioptrix Level 2&quot;&gt;&lt;/a&gt;Kioptrix Level 2&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;figure class=&quot;highlight less&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;selector-tag&quot;&gt;netdiscover&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;eth0&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.168&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;selector-tag&quot;&gt;IP&lt;/span&gt;            &lt;span class=&quot;selector-tag&quot;&gt;At&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;MAC&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;Address&lt;/span&gt;     &lt;span class=&quot;selector-tag&quot;&gt;Count&lt;/span&gt;     &lt;span class=&quot;selector-tag&quot;&gt;Len&lt;/span&gt;  &lt;span class=&quot;selector-tag&quot;&gt;MAC&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;Vendor&lt;/span&gt; / &lt;span class=&quot;selector-tag&quot;&gt;Hostname&lt;/span&gt;      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;span class=&quot;selector-tag&quot;&gt;-----------------------------------------------------------------------------&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;span class=&quot;selector-tag&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.168&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.1&lt;/span&gt;   &lt;span class=&quot;selector-tag&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:50&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:56&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:c0&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:00&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:08&lt;/span&gt;     &lt;span class=&quot;selector-tag&quot;&gt;17&lt;/span&gt;    &lt;span class=&quot;selector-tag&quot;&gt;1020&lt;/span&gt;  &lt;span class=&quot;selector-tag&quot;&gt;VMware&lt;/span&gt;, &lt;span class=&quot;selector-tag&quot;&gt;Inc&lt;/span&gt;.                &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;span class=&quot;selector-tag&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.168&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.2&lt;/span&gt;   &lt;span class=&quot;selector-tag&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:50&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:56&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:fe&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:05&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:7a&lt;/span&gt;      &lt;span class=&quot;selector-tag&quot;&gt;1&lt;/span&gt;      &lt;span class=&quot;selector-tag&quot;&gt;60&lt;/span&gt;  &lt;span class=&quot;selector-tag&quot;&gt;VMware&lt;/span&gt;, &lt;span class=&quot;selector-tag&quot;&gt;Inc&lt;/span&gt;.                &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;span class=&quot;selector-tag&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.168&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.137&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:0c&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:29&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:94&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:f0&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:68&lt;/span&gt;      &lt;span class=&quot;selector-tag&quot;&gt;1&lt;/span&gt;      &lt;span class=&quot;selector-tag&quot;&gt;60&lt;/span&gt;  &lt;span class=&quot;selector-tag&quot;&gt;VMware&lt;/span&gt;, &lt;span class=&quot;selector-tag&quot;&gt;Inc&lt;/span&gt;.                &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;span class=&quot;selector-tag&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.168&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.208&lt;/span&gt;&lt;span class=&quot;selector-class&quot;&gt;.254&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:50&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:56&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:f4&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:81&lt;/span&gt;&lt;span class=&quot;selector-pseudo&quot;&gt;:99&lt;/span&gt;      &lt;span class=&quot;selector-tag&quot;&gt;1&lt;/span&gt;      &lt;span class=&quot;selector-tag&quot;&gt;60&lt;/span&gt;  &lt;span class=&quot;selector-tag&quot;&gt;VMware&lt;/span&gt;, &lt;span class=&quot;selector-tag&quot;&gt;Inc&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="Kioptrix-lv.2" scheme="http://yoursite.com/tags/Kioptrix-lv-2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vulnhub-Kioptrix-lv.1-WalkThrough</title>
+    <link href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/"/>
+    <id>http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-1-WalkThrough/</id>
+    <published>2020-03-05T08:43:13.000Z</published>
+    <updated>2020-03-05T09:32:48.358Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Kioptrix-Level-1&quot;&gt;&lt;a href=&quot;#Kioptrix-Level-1&quot; class=&quot;headerlink&quot; title=&quot;Kioptrix Level 1&quot;&gt;&lt;/a&gt;Kioptrix Level 1&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;信息收集&quot;&gt;&lt;a href=&quot;#信息收集&quot; class=&quot;headerlink&quot; title=&quot;信息收集&quot;&gt;&lt;/a&gt;信息收集&lt;/h2&gt;&lt;p&gt;查看靶机ip&lt;/p&gt;&lt;figure class=&quot;highlight vim&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;root@kali:~# &lt;span class=&quot;keyword&quot;&gt;nmap&lt;/span&gt; -&lt;span class=&quot;keyword&quot;&gt;sn&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;208.1&lt;/span&gt;/&lt;span class=&quot;number&quot;&gt;24&lt;/span&gt; -T4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Starting Nmap &lt;span class=&quot;number&quot;&gt;7.70&lt;/span&gt; ( http&lt;span class=&quot;variable&quot;&gt;s:&lt;/span&gt;//&lt;span class=&quot;keyword&quot;&gt;nmap&lt;/span&gt;.org ) at &lt;span class=&quot;number&quot;&gt;2020&lt;/span&gt;-&lt;span class=&quot;number&quot;&gt;01&lt;/span&gt;-&lt;span class=&quot;number&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;02&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;42&lt;/span&gt; EST&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Nmap scan report &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; bogon (&lt;span class=&quot;number&quot;&gt;192.168&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;208.136&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Host &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt; (&lt;span class=&quot;number&quot;&gt;0.00014&lt;/span&gt;s latency).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;MAC Addres&lt;span class=&quot;variable&quot;&gt;s:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;00&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;C:&lt;span class=&quot;number&quot;&gt;29&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;52&lt;/span&gt;:D9:&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt; (VMware)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Host &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Nmap done: &lt;span class=&quot;number&quot;&gt;256&lt;/span&gt; IP addresses (&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt; hosts &lt;span class=&quot;keyword&quot;&gt;up&lt;/span&gt;) scanned in &lt;span class=&quot;number&quot;&gt;1.93&lt;/span&gt; seconds&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/categories/Vulnhub/"/>
+    
+    
+      <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Vulnhub" scheme="http://yoursite.com/tags/Vulnhub/"/>
+    
+      <category term="OSCP" scheme="http://yoursite.com/tags/OSCP/"/>
+    
+      <category term="Kioptrix-lv.1" scheme="http://yoursite.com/tags/Kioptrix-lv-1/"/>
     
   </entry>
   
@@ -64,7 +310,7 @@
     <link href="http://yoursite.com/2019/10/16/JSONP-%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E6%8A%80%E6%9C%AF/"/>
     <id>http://yoursite.com/2019/10/16/JSONP-安全攻防技术/</id>
     <published>2019-10-16T06:55:01.000Z</published>
-    <updated>2019-10-16T08:17:53.750Z</updated>
+    <updated>2020-03-06T02:00:25.876Z</updated>
     
     <summary type="html">
     
@@ -75,14 +321,14 @@
     </summary>
     
     
+      <category term="渗透测试" scheme="http://yoursite.com/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
     
       <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
     
       <category term="JSONP" scheme="http://yoursite.com/tags/JSONP/"/>
     
       <category term="Web安全" scheme="http://yoursite.com/tags/Web%E5%AE%89%E5%85%A8/"/>
-    
-      <category term="[object Object]" scheme="http://yoursite.com/tags/object-Object/"/>
     
   </entry>
   
@@ -91,7 +337,7 @@
     <link href="http://yoursite.com/2019/10/15/Pwn-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88/"/>
     <id>http://yoursite.com/2019/10/15/Pwn-函数调用栈/</id>
     <published>2019-10-15T07:49:16.000Z</published>
-    <updated>2019-10-15T08:38:16.980Z</updated>
+    <updated>2020-03-06T02:01:03.808Z</updated>
     
     <summary type="html">
     
@@ -106,12 +352,33 @@
     </summary>
     
     
+      <category term="渗透测试" scheme="http://yoursite.com/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
     
       <category term="渗透测试" scheme="http://yoursite.com/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
     
-      <category term="[object Object]" scheme="http://yoursite.com/tags/object-Object/"/>
-    
       <category term="Pwn" scheme="http://yoursite.com/tags/Pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python-urllib.parse模块</title>
+    <link href="http://yoursite.com/2019/10/14/Python-urllib.parse%E6%A8%A1%E5%9D%97/"/>
+    <id>http://yoursite.com/2019/10/14/Python-urllib.parse模块/</id>
+    <published>2019-10-13T16:00:00.000Z</published>
+    <updated>2019-10-14T12:51:46.269Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Python-urllib-parse模块&quot;&gt;&lt;a href=&quot;#Python-urllib-parse模块&quot; class=&quot;headerlink&quot; title=&quot;Python-urllib.parse模块&quot;&gt;&lt;/a&gt;Python-urllib.parse模块&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;模块简介&quot;&gt;&lt;a href=&quot;#模块简介&quot; class=&quot;headerlink&quot; title=&quot;模块简介&quot;&gt;&lt;/a&gt;模块简介&lt;/h2&gt;&lt;p&gt;url.parse :定义了url的标准接口，实现url的各种抽取&lt;br&gt;parse模块的使用：url的解析，合并，编码，解码&lt;/p&gt;&lt;h3 id=&quot;1、urlparse&quot;&gt;&lt;a href=&quot;#1、urlparse&quot; class=&quot;headerlink&quot; title=&quot;1、urlparse()&quot;&gt;&lt;/a&gt;1、urlparse()&lt;/h3&gt;&lt;figure class=&quot;highlight subunit&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;from urllib.parse import urlparse&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;test &lt;/span&gt;= urlparse(&quot;https://www.baidu.com/test.php?id=1&quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;print (test)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
   </entry>
   
@@ -139,27 +406,6 @@
       <category term="Web安全" scheme="http://yoursite.com/tags/Web%E5%AE%89%E5%85%A8/"/>
     
       <category term="XSS" scheme="http://yoursite.com/tags/XSS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python-urllib.parse模块</title>
-    <link href="http://yoursite.com/2019/10/14/Python-urllib.parse%E6%A8%A1%E5%9D%97/"/>
-    <id>http://yoursite.com/2019/10/14/Python-urllib.parse模块/</id>
-    <published>2019-10-13T16:00:00.000Z</published>
-    <updated>2019-10-14T12:51:46.269Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Python-urllib-parse模块&quot;&gt;&lt;a href=&quot;#Python-urllib-parse模块&quot; class=&quot;headerlink&quot; title=&quot;Python-urllib.parse模块&quot;&gt;&lt;/a&gt;Python-urllib.parse模块&lt;/h1&gt;&lt;hr&gt;&lt;h2 id=&quot;模块简介&quot;&gt;&lt;a href=&quot;#模块简介&quot; class=&quot;headerlink&quot; title=&quot;模块简介&quot;&gt;&lt;/a&gt;模块简介&lt;/h2&gt;&lt;p&gt;url.parse :定义了url的标准接口，实现url的各种抽取&lt;br&gt;parse模块的使用：url的解析，合并，编码，解码&lt;/p&gt;&lt;h3 id=&quot;1、urlparse&quot;&gt;&lt;a href=&quot;#1、urlparse&quot; class=&quot;headerlink&quot; title=&quot;1、urlparse()&quot;&gt;&lt;/a&gt;1、urlparse()&lt;/h3&gt;&lt;figure class=&quot;highlight subunit&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;from urllib.parse import urlparse&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;test &lt;/span&gt;= urlparse(&quot;https://www.baidu.com/test.php?id=1&quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;print (test)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
-    
-    
-      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
   </entry>
   

