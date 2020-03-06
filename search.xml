@@ -533,45 +533,6 @@
       </tags>
   </entry>
   <entry>
-    <title>XSS-编码解码</title>
-    <url>/2019/10/14/XSS-%E7%BC%96%E7%A0%81%E8%A7%A3%E7%A0%81/</url>
-    <content><![CDATA[<h1 id="跨站脚本攻击（XSS）-编码剖析"><a href="#跨站脚本攻击（XSS）-编码剖析" class="headerlink" title="跨站脚本攻击（XSS）-编码剖析"></a>跨站脚本攻击（XSS）-编码剖析</h1><hr><ul>
-<li>前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。</li>
-</ul><h2 id="1、浏览器的解码"><a href="#1、浏览器的解码" class="headerlink" title="1、浏览器的解码"></a>1、浏览器的解码</h2><p><img src="/2019/10/14/XSS-编码解码/1.jpg" alt></p><p>上图显示了浏览器从接收代码，到渲染完成的过程：<br>1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。<br>2、CSS 解析，解析CSS会产生CSS规则树。<br>3、Javascript DOM，主要是通过DOM API和CSSOM API来操作DOM Tree和CSS Rule Tree.</p><a id="more"></a>
-
-
-
-<p>浏览器最早开始解析HTML代码的时候，将标签转化为内容树中的DOM节点，此时浏览器识别标签的时候，其HTML解析器是无法识别<strong>被实体编码的内容</strong>的，（这代表，如果开发人员在服务器端实体编码了我们的代码，那么我们在这一环节将无法改变DOM树结构）只有建立起<strong>DOM树</strong>之后，才能对每个节点的内容进行渲染，在此基础上，JavaScript Dom API参与进来，可以对DOM树进行修改（包含Javascript的恶意代码会触发Javascript解释器，来改变DOM树结构和内容从而执行XSS）。而此时，CSS解析器负责解析外部CSS文件以及Style标签中的样式内容，这些信息将搭配HTML中的可见指令构建一个Rendering Tree。</p>
-<h2 id="2、编码和解码发生的顺序"><a href="#2、编码和解码发生的顺序" class="headerlink" title="2、编码和解码发生的顺序"></a>2、编码和解码发生的顺序</h2><p>我们刚才讲解了浏览器的渲染过程。现在我们来看一下从我们输入恶意代码，传入到服务器，再到服务器返回给浏览器，最终浏览器渲染成网页的这段过程中，都发生了什么。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;?php echo $_GET['input'];?&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">input</span>: <span class="number">%26</span>lt<span class="number">%5</span>cu4e00<span class="number">%26</span>gt</span><br></pre></td></tr></table></figure>
-
-<p>假设我们输入的值为 <strong>%26lt%5cu4e00%26gt</strong> 并通过GET请求提交至服务器，服务器回对我们输入的值进行URL解码，变成 <strong>&amp;lt\u4e00&amp;gt</strong> ，服务端传回数据给浏览器，浏览器生成了DOM树，此时的代码是这样的：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&amp;lt\u4e00&amp;gt');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>我们可以在页面右键点击 <strong>查看网站源代码</strong> 查看源码。（注意不是F12，F12的检查元素功能看到是的经过浏览器渲染后的内容)</p>
-<p>DOM树生成之后，浏览器对我们的代码进行渲染，首先对标签里的元素进行HTML实体解码，我们的代码变为了：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;\u4e00&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span>\</span><br></pre></td></tr></table></figure>
-
-<p>也就是f12的检查元素中显示的内容</p>
-<p>然后，当我们点击链接的时候，浏览器对href中的链接发起了一个请求，执行了Javascript代码，此时Javascript解释器对我们的参数进行了Unicode解码，此时，我们的代码变成了：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;-&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span>\</span><br></pre></td></tr></table></figure>
-
-<p>并最终弹框。<br><img src="/2019/10/14/XSS-编码解码/2.png" alt></p>
-<h2 id="3、一些注意事项"><a href="#3、一些注意事项" class="headerlink" title="3、一些注意事项"></a>3、一些注意事项</h2><p>当我们尝试使用编码来绕过过滤器时，要避免一些特殊的情况，如：<br>1、不能对Javacscript等伪协议进行URL编码，URL解码后会当做无协议处理。<br>2、在进行HTML解码的时候，不能对 <strong>“(‘</strong> 这些特殊字符进行HTML实体编码，解码后这些字符将变成普通文本。<br>3、在进行Javascript解析的时候，<strong>“(‘</strong> 这些控制字符不能进行JS编码，解码后这些符号被当做文本处理。</p>
-<hr>
-<h3 id="本文作者：Sh4Nn0n"><a href="#本文作者：Sh4Nn0n" class="headerlink" title="本文作者：Sh4Nn0n"></a>本文作者：Sh4Nn0n</h3><h3 id="本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。"><a href="#本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。" class="headerlink" title="本文首发于Sh4Nn0n’s Blog，写文不易，转载请注明出处。"></a>本文首发于<a href="http://www.sh4nn0n.com" target="_blank" rel="noopener">Sh4Nn0n’s Blog</a>，写文不易，转载请注明出处。</h3>]]></content>
-      <categories>
-        <category>渗透测试</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-        <tag>Web安全</tag>
-        <tag>XSS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python-urllib.parse模块</title>
     <url>/2019/10/14/Python-urllib.parse%E6%A8%A1%E5%9D%97/</url>
     <content><![CDATA[<h1 id="Python-urllib-parse模块"><a href="#Python-urllib-parse模块" class="headerlink" title="Python-urllib.parse模块"></a>Python-urllib.parse模块</h1><hr><h2 id="模块简介"><a href="#模块简介" class="headerlink" title="模块简介"></a>模块简介</h2><p>url.parse :定义了url的标准接口，实现url的各种抽取<br>parse模块的使用：url的解析，合并，编码，解码</p><h3 id="1、urlparse"><a href="#1、urlparse" class="headerlink" title="1、urlparse()"></a>1、urlparse()</h3><figure class="highlight subunit"><table><tr><td class="code"><pre><span class="line">from urllib.parse import urlparse</span><br><span class="line"><span class="keyword">test </span>= urlparse("https://www.baidu.com/test.php?id=1")</span><br><span class="line">print (test)</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -613,6 +574,45 @@
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XSS-编码解码</title>
+    <url>/2019/10/14/XSS-%E7%BC%96%E7%A0%81%E8%A7%A3%E7%A0%81/</url>
+    <content><![CDATA[<h1 id="跨站脚本攻击（XSS）-编码剖析"><a href="#跨站脚本攻击（XSS）-编码剖析" class="headerlink" title="跨站脚本攻击（XSS）-编码剖析"></a>跨站脚本攻击（XSS）-编码剖析</h1><hr><ul>
+<li>前言： 笔者从事安全两年间，看了许多xss文章，踩过很多坑，想按照自己的想法整理一下前辈们的总结，随有了这篇文章，学会XSS，理解浏览器的编码原理是重要的部分之一。</li>
+</ul><h2 id="1、浏览器的解码"><a href="#1、浏览器的解码" class="headerlink" title="1、浏览器的解码"></a>1、浏览器的解码</h2><p><img src="/2019/10/14/XSS-编码解码/1.jpg" alt></p><p>上图显示了浏览器从接收代码，到渲染完成的过程：<br>1、HTML/SVG/XHTML 解析，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。<br>2、CSS 解析，解析CSS会产生CSS规则树。<br>3、Javascript DOM，主要是通过DOM API和CSSOM API来操作DOM Tree和CSS Rule Tree.</p><a id="more"></a>
+
+
+
+<p>浏览器最早开始解析HTML代码的时候，将标签转化为内容树中的DOM节点，此时浏览器识别标签的时候，其HTML解析器是无法识别<strong>被实体编码的内容</strong>的，（这代表，如果开发人员在服务器端实体编码了我们的代码，那么我们在这一环节将无法改变DOM树结构）只有建立起<strong>DOM树</strong>之后，才能对每个节点的内容进行渲染，在此基础上，JavaScript Dom API参与进来，可以对DOM树进行修改（包含Javascript的恶意代码会触发Javascript解释器，来改变DOM树结构和内容从而执行XSS）。而此时，CSS解析器负责解析外部CSS文件以及Style标签中的样式内容，这些信息将搭配HTML中的可见指令构建一个Rendering Tree。</p>
+<h2 id="2、编码和解码发生的顺序"><a href="#2、编码和解码发生的顺序" class="headerlink" title="2、编码和解码发生的顺序"></a>2、编码和解码发生的顺序</h2><p>我们刚才讲解了浏览器的渲染过程。现在我们来看一下从我们输入恶意代码，传入到服务器，再到服务器返回给浏览器，最终浏览器渲染成网页的这段过程中，都发生了什么。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;?php echo $_GET['input'];?&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">input</span>: <span class="number">%26</span>lt<span class="number">%5</span>cu4e00<span class="number">%26</span>gt</span><br></pre></td></tr></table></figure>
+
+<p>假设我们输入的值为 <strong>%26lt%5cu4e00%26gt</strong> 并通过GET请求提交至服务器，服务器回对我们输入的值进行URL解码，变成 <strong>&amp;lt\u4e00&amp;gt</strong> ，服务端传回数据给浏览器，浏览器生成了DOM树，此时的代码是这样的：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&amp;lt\u4e00&amp;gt');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以在页面右键点击 <strong>查看网站源代码</strong> 查看源码。（注意不是F12，F12的检查元素功能看到是的经过浏览器渲染后的内容)</p>
+<p>DOM树生成之后，浏览器对我们的代码进行渲染，首先对标签里的元素进行HTML实体解码，我们的代码变为了：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;\u4e00&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span>\</span><br></pre></td></tr></table></figure>
+
+<p>也就是f12的检查元素中显示的内容</p>
+<p>然后，当我们点击链接的时候，浏览器对href中的链接发起了一个请求，执行了Javascript代码，此时Javascript解释器对我们的参数进行了Unicode解码，此时，我们的代码变成了：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert('&lt;-&gt;');"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">a</span>&gt;</span>\</span><br></pre></td></tr></table></figure>
+
+<p>并最终弹框。<br><img src="/2019/10/14/XSS-编码解码/2.png" alt></p>
+<h2 id="3、一些注意事项"><a href="#3、一些注意事项" class="headerlink" title="3、一些注意事项"></a>3、一些注意事项</h2><p>当我们尝试使用编码来绕过过滤器时，要避免一些特殊的情况，如：<br>1、不能对Javacscript等伪协议进行URL编码，URL解码后会当做无协议处理。<br>2、在进行HTML解码的时候，不能对 <strong>“(‘</strong> 这些特殊字符进行HTML实体编码，解码后这些字符将变成普通文本。<br>3、在进行Javascript解析的时候，<strong>“(‘</strong> 这些控制字符不能进行JS编码，解码后这些符号被当做文本处理。</p>
+<hr>
+<h3 id="本文作者：Sh4Nn0n"><a href="#本文作者：Sh4Nn0n" class="headerlink" title="本文作者：Sh4Nn0n"></a>本文作者：Sh4Nn0n</h3><h3 id="本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。"><a href="#本文首发于Sh4Nn0n’s-Blog，写文不易，转载请注明出处。" class="headerlink" title="本文首发于Sh4Nn0n’s Blog，写文不易，转载请注明出处。"></a>本文首发于<a href="http://www.sh4nn0n.com" target="_blank" rel="noopener">Sh4Nn0n’s Blog</a>，写文不易，转载请注明出处。</h3>]]></content>
+      <categories>
+        <category>渗透测试</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+        <tag>Web安全</tag>
+        <tag>XSS</tag>
       </tags>
   </entry>
   <entry>
